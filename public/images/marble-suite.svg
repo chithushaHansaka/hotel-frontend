@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none">
+  <rect width="1600" height="900" rx="24" fill="#f8f9fb"/>
+  <g transform="translate(160,120)">
+    <rect x="0" y="0" width="1280" height="660" rx="20" fill="#ffffff" stroke="#e9e9ee"/>
+    <g transform="translate(80,60)">
+      <rect x="0" y="0" width="520" height="360" rx="14" fill="#f3f5f7" stroke="#e0e4e8"/>
+      <rect x="560" y="0" width="520" height="360" rx="14" fill="#fffaf6" stroke="#efe6dc"/>
+      <rect x="0" y="400" width="1080" height="120" rx="8" fill="#f7f7f9" stroke="#ececee"/>
+      <circle cx="120" cy="120" r="28" fill="#e6eef3" />
+      <rect x="160" y="90" width="320" height="12" rx="6" fill="#e6eef3"/>
+      <text x="20" y="520" font-family="Inter, Arial, sans-serif" font-size="32" fill="#333">Marble Suite Lounge</text>
+      <text x="20" y="554" font-family="Inter, Arial, sans-serif" font-size="16" fill="#666">A serene suite framing daylight and private lounge seating.</text>
+    </g>
+  </g>
+</svg>

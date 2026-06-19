@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
+  <rect width="1920" height="1080" fill="#f3f4f6"/>
+  <g transform="translate(160,140)">
+    <rect x="0" y="0" width="1600" height="800" rx="20" fill="#ffffff" stroke="#e6e7eb"/>
+    <g transform="translate(80,80)">
+      <rect x="0" y="0" width="900" height="360" rx="12" fill="#fff7ed" stroke="#f4e3cf"/>
+      <rect x="940" y="0" width="520" height="360" rx="12" fill="#eef7ff" stroke="#d9eafc"/>
+      <text x="20" y="420" font-family="Inter, Arial, sans-serif" font-size="36" fill="#0f1724">Early Bird Retreat</text>
+      <text x="20" y="460" font-family="Inter, Arial, sans-serif" font-size="18" fill="#475569">Reserve early and enjoy an elevated rate plus complimentary breakfast.</text>
+      <circle cx="300" cy="180" r="80" fill="#fbe7d0" stroke="#f2cfa9"/>
+    </g>
+  </g>
+</svg>
