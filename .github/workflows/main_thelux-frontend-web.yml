@@ -48,11 +48,15 @@ jobs:
           name: node-app
           path: .
       
+  
+      - name: Zip files for deployment
+        run: zip -r release.zip .
+      
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'thelux-frontend-web'
           slot-name: 'Production'
-          package: .
+          package: release.zip 
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F48E8F56BF284BA083043672B4F8D61F }}
