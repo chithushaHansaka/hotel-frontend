@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
-  distDir: "build", // new part
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "unsplash.com" },
