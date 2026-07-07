@@ -12,7 +12,8 @@ import {
   Image as ImageIcon,
 } from "lucide-react";
 
-const API_URL = "http://localhost:5000/api/offers";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/offers";
 
 type OfferItem = {
   _id: string;

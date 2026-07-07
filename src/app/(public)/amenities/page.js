@@ -6,10 +6,14 @@ import Link from "next/link";
 import { Sparkles } from "lucide-react";
 import { reloadRoute } from "../../../lib/reloadNavigation";
 
-const API_URL = "http://localhost:5000/api/amenities";
-const SETTINGS_API_URL = "http://localhost:5000/api/settings";
-const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1600&q=100";
-const FALLBACK_HERO = "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=100";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/amenities";
+const SETTINGS_API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/settings";
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1600&q=100";
+const FALLBACK_HERO =
+  "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=100";
 
 export default function AmenitiesPage() {
   const [amenities, setAmenities] = useState([]);
@@ -39,8 +43,12 @@ export default function AmenitiesPage() {
       try {
         // Fetch both Amenities and Settings (for the Hero Banner) simultaneously
         const [amenitiesRes, settingsRes] = await Promise.all([
-          fetch(API_URL).then(res => res.json()).catch(() => null),
-          fetch(SETTINGS_API_URL).then(res => res.json()).catch(() => null)
+          fetch(API_URL)
+            .then((res) => res.json())
+            .catch(() => null),
+          fetch(SETTINGS_API_URL)
+            .then((res) => res.json())
+            .catch(() => null),
         ]);
 
         if (!isMounted) return;
@@ -54,7 +62,6 @@ export default function AmenitiesPage() {
         } else {
           setHeroImage(FALLBACK_HERO);
         }
-
       } catch (error) {
         console.error("Failed to fetch data:", error);
         if (isMounted && !heroImage) setHeroImage(FALLBACK_HERO);
@@ -79,7 +86,6 @@ export default function AmenitiesPage() {
 
   return (
     <main className="min-h-screen bg-black text-white overflow-hidden relative">
-      
       {/* Seamless Phantom Overlay for robust BFCache loading without hard conditional black screens */}
       <AnimatePresence>
         {!isReady && (
@@ -117,7 +123,6 @@ export default function AmenitiesPage() {
           <div className="absolute inset-0 bg-black/50" />
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center px-6">
-              
               {/* Element 1: Subtitle */}
               <motion.p
                 initial={{ opacity: 0, y: 40 }}
@@ -128,7 +133,7 @@ export default function AmenitiesPage() {
               >
                 Curated Collection
               </motion.p>
-              
+
               {/* Element 2: Title */}
               <motion.h1
                 initial={{ opacity: 0, y: 40 }}
@@ -151,7 +156,6 @@ export default function AmenitiesPage() {
                 A thoughtfully curated collection of signature services and
                 amenities tailored to a refined arrival.
               </motion.p>
-
             </div>
           </div>
         </div>
@@ -164,21 +168,27 @@ export default function AmenitiesPage() {
           ) : (
             amenities.map((item, i) => {
               const reverse = i % 2 === 1;
-              
-              const displayImage = item.images && item.images.length > 0 
-                ? item.images[0] 
-                : FALLBACK_IMAGE;
 
-              const displaySubtitle = item.features && item.features.length > 0 
-                ? item.features.join(" • ") 
-                : item.shortDescription;
+              const displayImage =
+                item.images && item.images.length > 0
+                  ? item.images[0]
+                  : FALLBACK_IMAGE;
+
+              const displaySubtitle =
+                item.features && item.features.length > 0
+                  ? item.features.join(" • ")
+                  : item.shortDescription;
 
               return (
                 <motion.section
                   key={item._id}
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1, margin: "0px 0px 100px 0px" }}
+                  viewport={{
+                    once: true,
+                    amount: 0.1,
+                    margin: "0px 0px 100px 0px",
+                  }}
                   style={{ willChange: "transform, opacity" }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
                   className={`flex flex-col lg:flex-row items-center gap-8 py-12 ${
@@ -198,12 +208,18 @@ export default function AmenitiesPage() {
                       <Sparkles size={12} />
                       {item.tag || "Signature Experience"}
                     </div>
-                    <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight">{item.title}</h3>
-                    <p className="mt-4 text-base leading-relaxed text-white/70">{displaySubtitle}</p>
+                    <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight">
+                      {item.title}
+                    </h3>
+                    <p className="mt-4 text-base leading-relaxed text-white/70">
+                      {displaySubtitle}
+                    </p>
                     <div className="mt-8">
                       <Link
                         href={`/amenities/${item._id}`}
-                        onClick={(e) => reloadRoute(e, `/amenities/${item._id}`)}
+                        onClick={(e) =>
+                          reloadRoute(e, `/amenities/${item._id}`)
+                        }
                         className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-white transition-all hover:bg-amber-500 hover:text-black hover:border-amber-500"
                       >
                         View Details

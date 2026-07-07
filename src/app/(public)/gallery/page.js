@@ -4,7 +4,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Camera, Filter, Sparkles, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-const API_URL = "http://localhost:5000/api/gallery";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/gallery";
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?q=80&w=1600&auto=format&fit=crop";
 const DEFAULT_FILTERS = ["All", "Interior", "Exterior", "Events", "Leisure"];

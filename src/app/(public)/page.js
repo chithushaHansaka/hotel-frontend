@@ -9,8 +9,10 @@ import { Sparkles, Star } from "lucide-react";
 import { reloadRoute } from "../../lib/reloadNavigation";
 import "swiper/css";
 
-const API_URL = "http://localhost:5000/api/settings";
-const AMENITIES_API_URL = "http://localhost:5000/api/amenities";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/settings";
+const AMENITIES_API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/amenities";
 const FALLBACK_HERO_IMAGE =
   "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1920&q=100";
 
@@ -74,8 +76,12 @@ export default function Page() {
     const loadData = async () => {
       try {
         const [settingsRes, amenitiesRes] = await Promise.all([
-          fetch(API_URL).then((res) => res.json()).catch(() => null),
-          fetch(AMENITIES_API_URL).then((res) => res.json()).catch(() => null)
+          fetch(API_URL)
+            .then((res) => res.json())
+            .catch(() => null),
+          fetch(AMENITIES_API_URL)
+            .then((res) => res.json())
+            .catch(() => null),
         ]);
 
         if (!isMounted) return;
@@ -112,7 +118,6 @@ export default function Page() {
         if (amenitiesRes?.success) {
           setAmenities(amenitiesRes.data.slice(0, 3));
         }
-
       } catch (error) {
         console.error("Failed to load data:", error);
         if (isMounted) setSettings(defaultSettings);
@@ -139,7 +144,9 @@ export default function Page() {
       <main className="flex min-h-screen w-full flex-col bg-black items-center justify-center">
         <div className="flex flex-col items-center justify-center space-y-4 animate-pulse">
           <div className="h-8 w-8 rounded-full border-t-2 border-r-2 border-amber-500 animate-spin"></div>
-          <div className="text-white/40 text-xs tracking-[0.2em] uppercase">Loading Experience</div>
+          <div className="text-white/40 text-xs tracking-[0.2em] uppercase">
+            Loading Experience
+          </div>
         </div>
       </main>
     );
@@ -330,7 +337,11 @@ export default function Page() {
                 key={amenity._id || index}
                 initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1, margin: "0px 0px 100px 0px" }}
+                viewport={{
+                  once: true,
+                  amount: 0.1,
+                  margin: "0px 0px 100px 0px",
+                }}
                 style={{ willChange: "transform, opacity" }}
                 transition={{
                   duration: 0.7,
@@ -484,7 +495,11 @@ export default function Page() {
                 key={`${testimonial.id}-${index}`}
                 initial={{ opacity: 0, y: 22 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1, margin: "0px 0px 100px 0px" }}
+                viewport={{
+                  once: true,
+                  amount: 0.1,
+                  margin: "0px 0px 100px 0px",
+                }}
                 style={{ willChange: "transform, opacity" }}
                 transition={{
                   duration: 0.7,

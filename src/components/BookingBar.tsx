@@ -1,10 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ChevronDown, ChevronUp, MessageCircle, Phone, Sparkles } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  MessageCircle,
+  Phone,
+  Sparkles,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:5000/api/settings";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/settings";
 
 export default function BookingBar() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -41,7 +48,9 @@ export default function BookingBar() {
     ? `https://wa.me/${whatsappNumber.replace(/[^\d]/g, "")}?text=${encodeURIComponent("Hello, I would like to speak with your concierge team regarding a luxury stay.")}`
     : undefined;
 
-  const phoneHref = contactPhone ? `tel:${contactPhone.replace(/\s/g, "")}` : undefined;
+  const phoneHref = contactPhone
+    ? `tel:${contactPhone.replace(/\s/g, "")}`
+    : undefined;
 
   return (
     <motion.aside
@@ -73,7 +82,9 @@ export default function BookingBar() {
             onClick={() => setIsExpanded((value) => !value)}
             className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-colors hover:border-amber-400/40 hover:text-amber-300"
             aria-label={
-              isExpanded ? "Minimize concierge widget" : "Expand concierge widget"
+              isExpanded
+                ? "Minimize concierge widget"
+                : "Expand concierge widget"
             }
           >
             {isExpanded ? <ChevronDown size={16} /> : <ChevronUp size={16} />}

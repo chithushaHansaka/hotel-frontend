@@ -6,7 +6,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import BookingModal from "@/components/BookingModal";
 
-const API_URL = "http://localhost:5000/api/rooms";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/rooms";
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1542314831-c6a4d14ecc8a?q=80&w=1600&auto=format&fit=crop";
 

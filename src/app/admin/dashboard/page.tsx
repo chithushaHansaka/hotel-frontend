@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api";
 
 export default function AdminDashboardPage() {
   const [counts, setCounts] = useState({

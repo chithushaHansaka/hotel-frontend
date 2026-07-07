@@ -16,7 +16,8 @@ import {
 } from "lucide-react";
 import { useBookingStore } from "@/store/bookingStore";
 
-const API_URL = "http://localhost:5000/api/addons/active";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/addons/active";
 
 const PLACEHOLDER_ADDONS = [
   {
@@ -77,7 +78,9 @@ const inputClass =
 export default function Step2Personalize() {
   const guestDetails = useBookingStore((state) => state.guestDetails);
   const selectedAddons = useBookingStore((state) => state.selectedAddons);
-  const updateGuestDetails = useBookingStore((state) => state.updateGuestDetails);
+  const updateGuestDetails = useBookingStore(
+    (state) => state.updateGuestDetails,
+  );
   const toggleAddon = useBookingStore((state) => state.toggleAddon);
   const setStep = useBookingStore((state) => state.setStep);
 
@@ -160,8 +163,8 @@ export default function Step2Personalize() {
           Personalize Your Stay
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/65 sm:text-base">
-          Share your details and elevate the experience with bespoke enhancements
-          curated by our concierge.
+          Share your details and elevate the experience with bespoke
+          enhancements curated by our concierge.
         </p>
       </div>
 

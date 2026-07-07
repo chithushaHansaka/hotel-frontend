@@ -14,7 +14,8 @@ import {
 } from "lucide-react";
 import { reloadRoute } from "../lib/reloadNavigation";
 
-const API_URL = "http://localhost:5000/api/settings";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/settings";
 
 type SiteSettings = {
   hotelName: string;

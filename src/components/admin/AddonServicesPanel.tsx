@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { Pencil, Plus, Trash2, X } from "lucide-react";
 
-const ADDONS_API = "http://localhost:5000/api/addons";
+const ADDONS_API =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/addons";
 
 const ADDON_CATEGORIES = [
   "Transport",
@@ -61,7 +62,9 @@ export default function AddonServicesPanel() {
       setAddons(Array.isArray(payload?.data) ? payload.data : []);
     } catch (loadError) {
       setError(
-        loadError instanceof Error ? loadError.message : "Failed to load add-ons.",
+        loadError instanceof Error
+          ? loadError.message
+          : "Failed to load add-ons.",
       );
     } finally {
       setIsLoading(false);
@@ -140,11 +143,17 @@ export default function AddonServicesPanel() {
         return [savedAddon, ...current];
       });
 
-      setMessage(editingAddonId ? "Add-on updated successfully." : "Add-on created successfully.");
+      setMessage(
+        editingAddonId
+          ? "Add-on updated successfully."
+          : "Add-on created successfully.",
+      );
       closeModal();
     } catch (submitError) {
       setError(
-        submitError instanceof Error ? submitError.message : "Failed to save add-on.",
+        submitError instanceof Error
+          ? submitError.message
+          : "Failed to save add-on.",
       );
     } finally {
       setIsSubmitting(false);
@@ -174,7 +183,9 @@ export default function AddonServicesPanel() {
       setMessage("Add-on deleted successfully.");
     } catch (deleteError) {
       setError(
-        deleteError instanceof Error ? deleteError.message : "Failed to delete add-on.",
+        deleteError instanceof Error
+          ? deleteError.message
+          : "Failed to delete add-on.",
       );
     } finally {
       setDeletingAddonId("");
@@ -199,7 +210,9 @@ export default function AddonServicesPanel() {
 
       setAddons((current) =>
         current.map((item) =>
-          item._id === addon._id ? { ...item, isActive: !addon.isActive } : item,
+          item._id === addon._id
+            ? { ...item, isActive: !addon.isActive }
+            : item,
         ),
       );
     } catch (toggleError) {
@@ -272,7 +285,9 @@ export default function AddonServicesPanel() {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <h4 className="text-lg font-semibold text-white">{addon.name}</h4>
+                    <h4 className="text-lg font-semibold text-white">
+                      {addon.name}
+                    </h4>
                     <span className="rounded-full border border-white/10 bg-black/25 px-2.5 py-1 text-[10px] uppercase tracking-[0.22em] text-white/50">
                       {addon.category}
                     </span>
@@ -357,7 +372,10 @@ export default function AddonServicesPanel() {
                   type="text"
                   value={form.name}
                   onChange={(event) =>
-                    setForm((current) => ({ ...current, name: event.target.value }))
+                    setForm((current) => ({
+                      ...current,
+                      name: event.target.value,
+                    }))
                   }
                   className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none focus:border-amber-300/45"
                   required
@@ -393,7 +411,10 @@ export default function AddonServicesPanel() {
                     step="1"
                     value={form.price}
                     onChange={(event) =>
-                      setForm((current) => ({ ...current, price: event.target.value }))
+                      setForm((current) => ({
+                        ...current,
+                        price: event.target.value,
+                      }))
                     }
                     className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none focus:border-amber-300/45"
                     required
@@ -415,7 +436,11 @@ export default function AddonServicesPanel() {
                     className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none [color-scheme:dark] focus:border-amber-300/45"
                   >
                     {ADDON_CATEGORIES.map((category) => (
-                      <option key={category} value={category} className="bg-zinc-950">
+                      <option
+                        key={category}
+                        value={category}
+                        className="bg-zinc-950"
+                      >
                         {category}
                       </option>
                     ))}
@@ -424,11 +449,16 @@ export default function AddonServicesPanel() {
               </div>
 
               <label className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/25 px-4 py-3.5">
-                <span className="text-sm text-white/75">Visible to guests during booking</span>
+                <span className="text-sm text-white/75">
+                  Visible to guests during booking
+                </span>
                 <button
                   type="button"
                   onClick={() =>
-                    setForm((current) => ({ ...current, isActive: !current.isActive }))
+                    setForm((current) => ({
+                      ...current,
+                      isActive: !current.isActive,
+                    }))
                   }
                   className={`relative h-7 w-12 rounded-full transition-colors ${
                     form.isActive ? "bg-amber-500" : "bg-white/15"
@@ -455,7 +485,11 @@ export default function AddonServicesPanel() {
                   disabled={isSubmitting}
                   className="rounded-full bg-amber-500 px-5 py-3 text-sm font-semibold text-black disabled:opacity-60"
                 >
-                  {isSubmitting ? "Saving..." : editingAddonId ? "Update Add-on" : "Create Add-on"}
+                  {isSubmitting
+                    ? "Saving..."
+                    : editingAddonId
+                      ? "Update Add-on"
+                      : "Create Add-on"}
                 </button>
               </div>
             </form>

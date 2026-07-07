@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ArrowRight, Eye, EyeOff, ShieldCheck, Sparkles } from "lucide-react";
 
-const API_URL = "http://localhost:5000/api/auth/login";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/auth/login";
 
 export default function AdminLoginPage() {
   const router = useRouter();

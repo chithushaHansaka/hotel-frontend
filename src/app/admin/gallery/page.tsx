@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { Plus, Trash2, Upload } from "lucide-react";
 
-const API_URL = "http://localhost:5000/api/gallery";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/gallery";
 const GALLERY_CATEGORIES = ["Interior", "Exterior", "Events", "Leisure"];
 
 type GalleryItem = {

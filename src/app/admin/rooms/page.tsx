@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { BedDouble, ImagePlus, Pencil, Plus, Trash2, X } from "lucide-react";
 
-const API_URL = "http://localhost:5000/api/rooms";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/rooms";
 
 type Room = {
   _id: string;

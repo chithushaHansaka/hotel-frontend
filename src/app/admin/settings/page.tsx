@@ -5,8 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Save, Sparkles, UserPlus, Trash2 } from "lucide-react";
 import AddonServicesPanel from "@/components/admin/AddonServicesPanel";
 
-const API_URL = "http://localhost:5000/api/settings";
-const AUTH_API_URL = "http://localhost:5000/api/auth";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/settings";
+const AUTH_API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/auth";
 
 const SETTINGS_TABS = [
   { id: "global", label: "Global Settings" },
@@ -322,8 +324,8 @@ export default function AdminSettingsPage() {
               Hotel identity and service controls
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-8 text-white/68 sm:text-lg">
-              Update global brand settings and curate premium booking add-ons from
-              one secure panel.
+              Update global brand settings and curate premium booking add-ons
+              from one secure panel.
             </p>
           </div>
 
@@ -341,519 +343,523 @@ export default function AdminSettingsPage() {
             transition={{ duration: 0.28, ease: "easeOut" }}
             className="will-change-transform"
           >
-      <section className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-8 rounded-[2rem] border border-white/10 bg-black/30 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-2xl sm:p-8"
-        >
-          <div className="flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-amber-200/80">
-            <Sparkles size={14} />
-            Global Site Settings
-          </div>
-
-          <section className="rounded-[1.75rem] border border-white/10 bg-white/5 p-5">
-            <div className="text-xs uppercase tracking-[0.3em] text-amber-200/80">
-              Brand Identity
-            </div>
-
-            <div className="mt-5 space-y-4">
-              <label className="block">
-                <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
-                  Hotel Name
-                </span>
-                <input
-                  type="text"
-                  value={settings.hotelName}
-                  onChange={(event) =>
-                    setSettings((current) => ({
-                      ...current,
-                      hotelName: event.target.value,
-                    }))
-                  }
-                  className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/30 focus:border-amber-300/45 focus:bg-black/50"
-                />
-              </label>
-
-              <label className="block">
-                <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
-                  Logo Image Upload
-                </span>
-                <input
-                  type="file"
-                  accept="image/jpeg,image/jpg,image/png,image/webp"
-                  onChange={(event) =>
-                    setLogoFile(event.target.files?.[0] || null)
-                  }
-                  className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm text-white file:mr-4 file:rounded-full file:border-0 file:bg-amber-400 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-black"
-                />
-              </label>
-
-              <div className="rounded-[1.25rem] border border-white/10 bg-black/25 p-4">
-                <div className="text-xs uppercase tracking-[0.25em] text-white/45">
-                  Current Logo
-                </div>
-                <div className="mt-4 flex h-24 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-black/40">
-                  {settings.logoUrl ? (
-                    <img
-                      src={settings.logoUrl}
-                      alt="Logo preview"
-                      className="h-full w-full object-contain"
-                    />
-                  ) : (
-                    <span className="text-sm text-white/35">
-                      No logo configured
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="rounded-[1.75rem] border border-white/10 bg-white/5 p-5">
-            <div className="text-xs uppercase tracking-[0.3em] text-amber-200/80">
-              Hero Section
-            </div>
-
-            <div className="mt-5 space-y-4">
-              <label className="block">
-                <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
-                  Hero Title
-                </span>
-                <input
-                  type="text"
-                  value={settings.heroTitle}
-                  onChange={(event) =>
-                    setSettings((current) => ({
-                      ...current,
-                      heroTitle: event.target.value,
-                    }))
-                  }
-                  className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/30 focus:border-amber-300/45 focus:bg-black/50"
-                />
-              </label>
-
-              <label className="block">
-                <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
-                  Hero Subtitle
-                </span>
-                <input
-                  type="text"
-                  value={settings.heroSubtitle}
-                  onChange={(event) =>
-                    setSettings((current) => ({
-                      ...current,
-                      heroSubtitle: event.target.value,
-                    }))
-                  }
-                  className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/30 focus:border-amber-300/45 focus:bg-black/50"
-                />
-              </label>
-
-              <label className="block">
-                <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
-                  Hero Banners Upload (Max 3)
-                </span>
-                <input
-                  type="file"
-                  multiple
-                  accept="image/jpeg,image/jpg,image/png,image/webp"
-                  onChange={(event) => {
-                    if (event.target.files) {
-                      const filesArray = Array.from(event.target.files).slice(
-                        0,
-                        3,
-                      );
-                      setHeroBannerFiles(filesArray);
-                    }
-                  }}
-                  className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm text-white file:mr-4 file:rounded-full file:border-0 file:bg-amber-400 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-black"
-                />
-                {heroBannerFiles.length > 0 && (
-                  <p className="mt-2 text-xs text-emerald-400">
-                    {heroBannerFiles.length} file(s) selected.
-                  </p>
-                )}
-              </label>
-
-              <div className="rounded-[1.25rem] border border-white/10 bg-black/25 p-4">
-                <div className="text-xs uppercase tracking-[0.25em] text-white/45">
-                  Current Hero Banner
-                </div>
-                <div className="mt-4 flex h-24 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-black/40">
-                  {settings.heroImageUrl ? (
-                    <img
-                      src={settings.heroImageUrl}
-                      alt="Hero preview"
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-sm text-white/35">
-                      No hero image configured
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="rounded-[1.75rem] border border-white/10 bg-white/5 p-5">
-            <div className="text-xs uppercase tracking-[0.3em] text-amber-200/80">
-              Legacy
-            </div>
-            <label className="mt-5 block">
-              <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
-                Legacy Main Title
-              </span>
-              <input
-                type="text"
-                value={settings.legacyTitle}
-                onChange={(event) =>
-                  setSettings((current) => ({
-                    ...current,
-                    legacyTitle: event.target.value,
-                  }))
-                }
-                className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/30 focus:border-amber-300/45 focus:bg-black/50"
-              />
-            </label>
-            <label className="mt-4 block">
-              <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
-                About Text
-              </span>
-              <textarea
-                rows={5}
-                value={settings.aboutText}
-                onChange={(event) =>
-                  setSettings((current) => ({
-                    ...current,
-                    aboutText: event.target.value,
-                  }))
-                }
-                className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/30 focus:border-amber-300/45 focus:bg-black/50"
-              />
-            </label>
-          </section>
-
-          <section className="rounded-[1.75rem] border border-white/10 bg-white/5 p-5">
-            <div className="text-xs uppercase tracking-[0.3em] text-amber-200/80">
-              Marketing Stats
-            </div>
-            <div className="mt-5 grid gap-4">
-              {settings.homeStats.map((stat, index) => (
-                <div
-                  key={`home-stat-${index}`}
-                  className="rounded-[1.25rem] border border-white/10 bg-black/25 p-4"
-                >
-                  <div className="text-[11px] uppercase tracking-[0.28em] text-white/45">
-                    Stat {index + 1}
-                  </div>
-                  <div className="mt-4 grid gap-4 md:grid-cols-2">
-                    <label className="block">
-                      <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
-                        Value
-                      </span>
-                      <input
-                        type="text"
-                        value={stat.value}
-                        onChange={(event) =>
-                          setSettings((current) => ({
-                            ...current,
-                            homeStats: current.homeStats.map((item, i) =>
-                              i === index
-                                ? { ...item, value: event.target.value }
-                                : item,
-                            ),
-                          }))
-                        }
-                        className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-amber-300/45"
-                      />
-                    </label>
-                    <label className="block">
-                      <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
-                        Label
-                      </span>
-                      <input
-                        type="text"
-                        value={stat.label}
-                        onChange={(event) =>
-                          setSettings((current) => ({
-                            ...current,
-                            homeStats: current.homeStats.map((item, i) =>
-                              i === index
-                                ? { ...item, label: event.target.value }
-                                : item,
-                            ),
-                          }))
-                        }
-                        className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-amber-300/45"
-                      />
-                    </label>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="rounded-[1.75rem] border border-white/10 bg-white/5 p-5">
-            <div className="text-xs uppercase tracking-[0.3em] text-amber-200/80">
-              Contact Details
-            </div>
-            <div className="mt-5 grid gap-4 md:grid-cols-2">
-              <label className="block">
-                <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
-                  Email
-                </span>
-                <input
-                  type="email"
-                  value={settings.contactEmail}
-                  onChange={(event) =>
-                    setSettings((current) => ({
-                      ...current,
-                      contactEmail: event.target.value,
-                    }))
-                  }
-                  className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-amber-300/45"
-                />
-              </label>
-              <label className="block">
-                <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
-                  Phone
-                </span>
-                <input
-                  type="text"
-                  value={settings.contactPhone}
-                  onChange={(event) =>
-                    setSettings((current) => ({
-                      ...current,
-                      contactPhone: event.target.value,
-                    }))
-                  }
-                  className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-amber-300/45"
-                />
-              </label>
-              <label className="block">
-                <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
-                  WhatsApp Number
-                </span>
-                <input
-                  type="text"
-                  value={settings.whatsappNumber}
-                  onChange={(event) =>
-                    setSettings((current) => ({
-                      ...current,
-                      whatsappNumber: event.target.value,
-                    }))
-                  }
-                  className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-amber-300/45"
-                />
-              </label>
-              <label className="block md:col-span-2">
-                <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
-                  Footer Address
-                </span>
-                <input
-                  type="text"
-                  value={settings.footerAddress}
-                  onChange={(event) =>
-                    setSettings((current) => ({
-                      ...current,
-                      footerAddress: event.target.value,
-                    }))
-                  }
-                  className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-amber-300/45"
-                />
-              </label>
-            </div>
-          </section>
-
-          {error ? (
-            <div className="rounded-2xl border border-rose-400/20 bg-rose-400/10 px-4 py-3 text-sm text-rose-100">
-              {error}
-            </div>
-          ) : null}
-          {message ? (
-            <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100">
-              {message}
-            </div>
-          ) : null}
-
-          <button
-            type="submit"
-            disabled={isSaving || isLoading}
-            className="lux-action inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 px-6 py-3.5 text-sm font-semibold text-black shadow-[0_18px_50px_rgba(201,163,107,0.32)] transition disabled:cursor-not-allowed disabled:opacity-70"
-          >
-            <Save size={16} />
-            {isSaving ? "Saving..." : "Save Settings"}
-          </button>
-        </form>
-
-        {/* --- Right Side Column (Live Preview + Admin Management) --- */}
-        <aside className="space-y-6">
-          <div className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.03))] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-2xl sm:p-8">
-            <div className="text-xs uppercase tracking-[0.3em] text-white/45">
-              Live Preview
-            </div>
-
-            <div className="mt-6 flex items-center gap-4 rounded-[1.5rem] border border-white/10 bg-black/25 p-5">
-              <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-amber-300/20 bg-amber-300/10 text-lg font-semibold text-amber-100">
-                {settings.logoUrl ? (
-                  <img
-                    src={settings.logoUrl}
-                    alt="Hotel logo preview"
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  settings.hotelName.slice(0, 1)
-                )}
-              </div>
-              <div>
-                <div className="text-xs uppercase tracking-[0.32em] text-amber-200/80">
-                  Public Branding
-                </div>
-                <h3 className="mt-2 text-2xl font-semibold text-white">
-                  {settings.hotelName || defaultSettings.hotelName}
-                </h3>
-              </div>
-            </div>
-
-            <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-black/25 p-5">
-              <div className="text-xs uppercase tracking-[0.28em] text-white/45">
-                Contact Preview
-              </div>
-              <div className="mt-4 space-y-3 text-sm text-white/70">
-                <p>{settings.contactEmail}</p>
-                <p>{settings.contactPhone}</p>
-                <p>{settings.whatsappNumber}</p>
-                <p>{settings.footerAddress}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* User Management Section */}
-          <div className="rounded-[2rem] border border-white/10 bg-black/30 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-2xl sm:p-8">
-            <div className="flex items-center justify-between mb-6">
-              <div className="text-xs uppercase tracking-[0.3em] text-amber-200/80">
-                User Access
-              </div>
-              <div className="rounded-full bg-amber-400/10 px-3 py-1 text-[10px] uppercase tracking-wider text-amber-200 border border-amber-400/20">
-                {admins.length} Users
-              </div>
-            </div>
-
-            {/* Add New Admin Form */}
-            <form
-              onSubmit={handleAddAdmin}
-              autoComplete="off"
-              className="space-y-4 mb-8 p-5 rounded-[1.5rem] border border-white/5 bg-white/5"
-            >
-              <div className="text-[11px] uppercase tracking-[0.2em] text-white/50 mb-4 flex items-center gap-2">
-                <UserPlus size={14} /> Add New User
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  required
-                  autoComplete="off"
-                  value={adminForm.name}
-                  onChange={(e) =>
-                    setAdminForm({ ...adminForm, name: e.target.value })
-                  }
-                  className="w-full rounded-xl border border-white/10 bg-black/35 px-4 py-2.5 text-sm text-white outline-none focus:border-amber-300/45"
-                />
-                <input
-                  type="email"
-                  placeholder="Email Address"
-                  required
-                  autoComplete="off"
-                  value={adminForm.email}
-                  onChange={(e) =>
-                    setAdminForm({ ...adminForm, email: e.target.value })
-                  }
-                  className="w-full rounded-xl border border-white/10 bg-black/35 px-4 py-2.5 text-sm text-white outline-none focus:border-amber-300/45"
-                />
-                <input
-                  type="password"
-                  placeholder="Secure Password"
-                  required
-                  autoComplete="new-password"
-                  value={adminForm.password}
-                  onChange={(e) =>
-                    setAdminForm({ ...adminForm, password: e.target.value })
-                  }
-                  className="w-full rounded-xl border border-white/10 bg-black/35 px-4 py-2.5 text-sm text-white outline-none focus:border-amber-300/45"
-                />
-                <select
-                  value={adminForm.role}
-                  onChange={(e) =>
-                    setAdminForm({ ...adminForm, role: e.target.value })
-                  }
-                  className="w-full rounded-xl border border-white/10 bg-black/35 px-4 py-2.5 text-sm text-white/70 outline-none focus:border-amber-300/45 appearance-none"
-                >
-                  <option value="Admin">Normal Admin</option>
-                  <option value="SuperAdmin">Super Admin</option>
-                </select>
-              </div>
-
-              {adminError && (
-                <div className="text-xs text-rose-400 mt-2">{adminError}</div>
-              )}
-              {adminMessage && (
-                <div className="text-xs text-emerald-400 mt-2">
-                  {adminMessage}
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={isAddingAdmin}
-                className="w-full mt-2 rounded-xl bg-white/10 hover:bg-white/15 px-4 py-2.5 text-sm font-medium text-white transition-colors disabled:opacity-50"
+            <section className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-8 rounded-[2rem] border border-white/10 bg-black/30 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-2xl sm:p-8"
               >
-                {isAddingAdmin ? "Creating..." : "Create Account"}
-              </button>
-            </form>
+                <div className="flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-amber-200/80">
+                  <Sparkles size={14} />
+                  Global Site Settings
+                </div>
 
-            {/* List of Admins */}
-            <div className="space-y-3">
-              {admins.map((admin) => (
-                <div
-                  key={admin._id}
-                  className="flex items-center justify-between p-4 rounded-[1.25rem] border border-white/5 bg-white/5 hover:bg-white/10 transition-colors"
-                >
-                  <div className="truncate pr-4">
-                    <div className="text-sm font-medium text-white truncate">
-                      {admin.name}
-                    </div>
-                    <div className="text-xs text-white/50 truncate">
-                      {admin.email}
+                <section className="rounded-[1.75rem] border border-white/10 bg-white/5 p-5">
+                  <div className="text-xs uppercase tracking-[0.3em] text-amber-200/80">
+                    Brand Identity
+                  </div>
+
+                  <div className="mt-5 space-y-4">
+                    <label className="block">
+                      <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                        Hotel Name
+                      </span>
+                      <input
+                        type="text"
+                        value={settings.hotelName}
+                        onChange={(event) =>
+                          setSettings((current) => ({
+                            ...current,
+                            hotelName: event.target.value,
+                          }))
+                        }
+                        className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/30 focus:border-amber-300/45 focus:bg-black/50"
+                      />
+                    </label>
+
+                    <label className="block">
+                      <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                        Logo Image Upload
+                      </span>
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/jpg,image/png,image/webp"
+                        onChange={(event) =>
+                          setLogoFile(event.target.files?.[0] || null)
+                        }
+                        className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm text-white file:mr-4 file:rounded-full file:border-0 file:bg-amber-400 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-black"
+                      />
+                    </label>
+
+                    <div className="rounded-[1.25rem] border border-white/10 bg-black/25 p-4">
+                      <div className="text-xs uppercase tracking-[0.25em] text-white/45">
+                        Current Logo
+                      </div>
+                      <div className="mt-4 flex h-24 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-black/40">
+                        {settings.logoUrl ? (
+                          <img
+                            src={settings.logoUrl}
+                            alt="Logo preview"
+                            className="h-full w-full object-contain"
+                          />
+                        ) : (
+                          <span className="text-sm text-white/35">
+                            No logo configured
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 flex-shrink-0">
-                    <span
-                      className={`text-[9px] font-semibold uppercase tracking-wider px-2 py-1 rounded-md ${admin.role === "SuperAdmin" ? "bg-amber-400/20 text-amber-200 border border-amber-400/30" : "bg-white/10 text-white/70 border border-white/10"}`}
-                    >
-                      {admin.role === "SuperAdmin" ? "Super" : "Admin"}
-                    </span>
-                    {admin.email !== currentUserEmail && (
-                      <button
-                        type="button"
-                        onClick={() =>
-                          handleDeleteAdmin(admin._id, admin.email)
+                </section>
+
+                <section className="rounded-[1.75rem] border border-white/10 bg-white/5 p-5">
+                  <div className="text-xs uppercase tracking-[0.3em] text-amber-200/80">
+                    Hero Section
+                  </div>
+
+                  <div className="mt-5 space-y-4">
+                    <label className="block">
+                      <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                        Hero Title
+                      </span>
+                      <input
+                        type="text"
+                        value={settings.heroTitle}
+                        onChange={(event) =>
+                          setSettings((current) => ({
+                            ...current,
+                            heroTitle: event.target.value,
+                          }))
                         }
-                        className="text-white/30 hover:text-rose-400 transition-colors p-1"
-                        title="Delete User"
+                        className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/30 focus:border-amber-300/45 focus:bg-black/50"
+                      />
+                    </label>
+
+                    <label className="block">
+                      <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                        Hero Subtitle
+                      </span>
+                      <input
+                        type="text"
+                        value={settings.heroSubtitle}
+                        onChange={(event) =>
+                          setSettings((current) => ({
+                            ...current,
+                            heroSubtitle: event.target.value,
+                          }))
+                        }
+                        className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/30 focus:border-amber-300/45 focus:bg-black/50"
+                      />
+                    </label>
+
+                    <label className="block">
+                      <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                        Hero Banners Upload (Max 3)
+                      </span>
+                      <input
+                        type="file"
+                        multiple
+                        accept="image/jpeg,image/jpg,image/png,image/webp"
+                        onChange={(event) => {
+                          if (event.target.files) {
+                            const filesArray = Array.from(
+                              event.target.files,
+                            ).slice(0, 3);
+                            setHeroBannerFiles(filesArray);
+                          }
+                        }}
+                        className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm text-white file:mr-4 file:rounded-full file:border-0 file:bg-amber-400 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-black"
+                      />
+                      {heroBannerFiles.length > 0 && (
+                        <p className="mt-2 text-xs text-emerald-400">
+                          {heroBannerFiles.length} file(s) selected.
+                        </p>
+                      )}
+                    </label>
+
+                    <div className="rounded-[1.25rem] border border-white/10 bg-black/25 p-4">
+                      <div className="text-xs uppercase tracking-[0.25em] text-white/45">
+                        Current Hero Banner
+                      </div>
+                      <div className="mt-4 flex h-24 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-black/40">
+                        {settings.heroImageUrl ? (
+                          <img
+                            src={settings.heroImageUrl}
+                            alt="Hero preview"
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-sm text-white/35">
+                            No hero image configured
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="rounded-[1.75rem] border border-white/10 bg-white/5 p-5">
+                  <div className="text-xs uppercase tracking-[0.3em] text-amber-200/80">
+                    Legacy
+                  </div>
+                  <label className="mt-5 block">
+                    <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                      Legacy Main Title
+                    </span>
+                    <input
+                      type="text"
+                      value={settings.legacyTitle}
+                      onChange={(event) =>
+                        setSettings((current) => ({
+                          ...current,
+                          legacyTitle: event.target.value,
+                        }))
+                      }
+                      className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/30 focus:border-amber-300/45 focus:bg-black/50"
+                    />
+                  </label>
+                  <label className="mt-4 block">
+                    <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                      About Text
+                    </span>
+                    <textarea
+                      rows={5}
+                      value={settings.aboutText}
+                      onChange={(event) =>
+                        setSettings((current) => ({
+                          ...current,
+                          aboutText: event.target.value,
+                        }))
+                      }
+                      className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/30 focus:border-amber-300/45 focus:bg-black/50"
+                    />
+                  </label>
+                </section>
+
+                <section className="rounded-[1.75rem] border border-white/10 bg-white/5 p-5">
+                  <div className="text-xs uppercase tracking-[0.3em] text-amber-200/80">
+                    Marketing Stats
+                  </div>
+                  <div className="mt-5 grid gap-4">
+                    {settings.homeStats.map((stat, index) => (
+                      <div
+                        key={`home-stat-${index}`}
+                        className="rounded-[1.25rem] border border-white/10 bg-black/25 p-4"
                       >
-                        <Trash2 size={16} />
-                      </button>
-                    )}
+                        <div className="text-[11px] uppercase tracking-[0.28em] text-white/45">
+                          Stat {index + 1}
+                        </div>
+                        <div className="mt-4 grid gap-4 md:grid-cols-2">
+                          <label className="block">
+                            <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                              Value
+                            </span>
+                            <input
+                              type="text"
+                              value={stat.value}
+                              onChange={(event) =>
+                                setSettings((current) => ({
+                                  ...current,
+                                  homeStats: current.homeStats.map((item, i) =>
+                                    i === index
+                                      ? { ...item, value: event.target.value }
+                                      : item,
+                                  ),
+                                }))
+                              }
+                              className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-amber-300/45"
+                            />
+                          </label>
+                          <label className="block">
+                            <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                              Label
+                            </span>
+                            <input
+                              type="text"
+                              value={stat.label}
+                              onChange={(event) =>
+                                setSettings((current) => ({
+                                  ...current,
+                                  homeStats: current.homeStats.map((item, i) =>
+                                    i === index
+                                      ? { ...item, label: event.target.value }
+                                      : item,
+                                  ),
+                                }))
+                              }
+                              className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-amber-300/45"
+                            />
+                          </label>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                <section className="rounded-[1.75rem] border border-white/10 bg-white/5 p-5">
+                  <div className="text-xs uppercase tracking-[0.3em] text-amber-200/80">
+                    Contact Details
+                  </div>
+                  <div className="mt-5 grid gap-4 md:grid-cols-2">
+                    <label className="block">
+                      <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                        Email
+                      </span>
+                      <input
+                        type="email"
+                        value={settings.contactEmail}
+                        onChange={(event) =>
+                          setSettings((current) => ({
+                            ...current,
+                            contactEmail: event.target.value,
+                          }))
+                        }
+                        className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-amber-300/45"
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                        Phone
+                      </span>
+                      <input
+                        type="text"
+                        value={settings.contactPhone}
+                        onChange={(event) =>
+                          setSettings((current) => ({
+                            ...current,
+                            contactPhone: event.target.value,
+                          }))
+                        }
+                        className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-amber-300/45"
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                        WhatsApp Number
+                      </span>
+                      <input
+                        type="text"
+                        value={settings.whatsappNumber}
+                        onChange={(event) =>
+                          setSettings((current) => ({
+                            ...current,
+                            whatsappNumber: event.target.value,
+                          }))
+                        }
+                        className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-amber-300/45"
+                      />
+                    </label>
+                    <label className="block md:col-span-2">
+                      <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                        Footer Address
+                      </span>
+                      <input
+                        type="text"
+                        value={settings.footerAddress}
+                        onChange={(event) =>
+                          setSettings((current) => ({
+                            ...current,
+                            footerAddress: event.target.value,
+                          }))
+                        }
+                        className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-amber-300/45"
+                      />
+                    </label>
+                  </div>
+                </section>
+
+                {error ? (
+                  <div className="rounded-2xl border border-rose-400/20 bg-rose-400/10 px-4 py-3 text-sm text-rose-100">
+                    {error}
+                  </div>
+                ) : null}
+                {message ? (
+                  <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100">
+                    {message}
+                  </div>
+                ) : null}
+
+                <button
+                  type="submit"
+                  disabled={isSaving || isLoading}
+                  className="lux-action inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 px-6 py-3.5 text-sm font-semibold text-black shadow-[0_18px_50px_rgba(201,163,107,0.32)] transition disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  <Save size={16} />
+                  {isSaving ? "Saving..." : "Save Settings"}
+                </button>
+              </form>
+
+              {/* --- Right Side Column (Live Preview + Admin Management) --- */}
+              <aside className="space-y-6">
+                <div className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.03))] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-2xl sm:p-8">
+                  <div className="text-xs uppercase tracking-[0.3em] text-white/45">
+                    Live Preview
+                  </div>
+
+                  <div className="mt-6 flex items-center gap-4 rounded-[1.5rem] border border-white/10 bg-black/25 p-5">
+                    <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-amber-300/20 bg-amber-300/10 text-lg font-semibold text-amber-100">
+                      {settings.logoUrl ? (
+                        <img
+                          src={settings.logoUrl}
+                          alt="Hotel logo preview"
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        settings.hotelName.slice(0, 1)
+                      )}
+                    </div>
+                    <div>
+                      <div className="text-xs uppercase tracking-[0.32em] text-amber-200/80">
+                        Public Branding
+                      </div>
+                      <h3 className="mt-2 text-2xl font-semibold text-white">
+                        {settings.hotelName || defaultSettings.hotelName}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-black/25 p-5">
+                    <div className="text-xs uppercase tracking-[0.28em] text-white/45">
+                      Contact Preview
+                    </div>
+                    <div className="mt-4 space-y-3 text-sm text-white/70">
+                      <p>{settings.contactEmail}</p>
+                      <p>{settings.contactPhone}</p>
+                      <p>{settings.whatsappNumber}</p>
+                      <p>{settings.footerAddress}</p>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </aside>
-      </section>
+
+                {/* User Management Section */}
+                <div className="rounded-[2rem] border border-white/10 bg-black/30 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-2xl sm:p-8">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="text-xs uppercase tracking-[0.3em] text-amber-200/80">
+                      User Access
+                    </div>
+                    <div className="rounded-full bg-amber-400/10 px-3 py-1 text-[10px] uppercase tracking-wider text-amber-200 border border-amber-400/20">
+                      {admins.length} Users
+                    </div>
+                  </div>
+
+                  {/* Add New Admin Form */}
+                  <form
+                    onSubmit={handleAddAdmin}
+                    autoComplete="off"
+                    className="space-y-4 mb-8 p-5 rounded-[1.5rem] border border-white/5 bg-white/5"
+                  >
+                    <div className="text-[11px] uppercase tracking-[0.2em] text-white/50 mb-4 flex items-center gap-2">
+                      <UserPlus size={14} /> Add New User
+                    </div>
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <input
+                        type="text"
+                        placeholder="Full Name"
+                        required
+                        autoComplete="off"
+                        value={adminForm.name}
+                        onChange={(e) =>
+                          setAdminForm({ ...adminForm, name: e.target.value })
+                        }
+                        className="w-full rounded-xl border border-white/10 bg-black/35 px-4 py-2.5 text-sm text-white outline-none focus:border-amber-300/45"
+                      />
+                      <input
+                        type="email"
+                        placeholder="Email Address"
+                        required
+                        autoComplete="off"
+                        value={adminForm.email}
+                        onChange={(e) =>
+                          setAdminForm({ ...adminForm, email: e.target.value })
+                        }
+                        className="w-full rounded-xl border border-white/10 bg-black/35 px-4 py-2.5 text-sm text-white outline-none focus:border-amber-300/45"
+                      />
+                      <input
+                        type="password"
+                        placeholder="Secure Password"
+                        required
+                        autoComplete="new-password"
+                        value={adminForm.password}
+                        onChange={(e) =>
+                          setAdminForm({
+                            ...adminForm,
+                            password: e.target.value,
+                          })
+                        }
+                        className="w-full rounded-xl border border-white/10 bg-black/35 px-4 py-2.5 text-sm text-white outline-none focus:border-amber-300/45"
+                      />
+                      <select
+                        value={adminForm.role}
+                        onChange={(e) =>
+                          setAdminForm({ ...adminForm, role: e.target.value })
+                        }
+                        className="w-full rounded-xl border border-white/10 bg-black/35 px-4 py-2.5 text-sm text-white/70 outline-none focus:border-amber-300/45 appearance-none"
+                      >
+                        <option value="Admin">Normal Admin</option>
+                        <option value="SuperAdmin">Super Admin</option>
+                      </select>
+                    </div>
+
+                    {adminError && (
+                      <div className="text-xs text-rose-400 mt-2">
+                        {adminError}
+                      </div>
+                    )}
+                    {adminMessage && (
+                      <div className="text-xs text-emerald-400 mt-2">
+                        {adminMessage}
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={isAddingAdmin}
+                      className="w-full mt-2 rounded-xl bg-white/10 hover:bg-white/15 px-4 py-2.5 text-sm font-medium text-white transition-colors disabled:opacity-50"
+                    >
+                      {isAddingAdmin ? "Creating..." : "Create Account"}
+                    </button>
+                  </form>
+
+                  {/* List of Admins */}
+                  <div className="space-y-3">
+                    {admins.map((admin) => (
+                      <div
+                        key={admin._id}
+                        className="flex items-center justify-between p-4 rounded-[1.25rem] border border-white/5 bg-white/5 hover:bg-white/10 transition-colors"
+                      >
+                        <div className="truncate pr-4">
+                          <div className="text-sm font-medium text-white truncate">
+                            {admin.name}
+                          </div>
+                          <div className="text-xs text-white/50 truncate">
+                            {admin.email}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3 flex-shrink-0">
+                          <span
+                            className={`text-[9px] font-semibold uppercase tracking-wider px-2 py-1 rounded-md ${admin.role === "SuperAdmin" ? "bg-amber-400/20 text-amber-200 border border-amber-400/30" : "bg-white/10 text-white/70 border border-white/10"}`}
+                          >
+                            {admin.role === "SuperAdmin" ? "Super" : "Admin"}
+                          </span>
+                          {admin.email !== currentUserEmail && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleDeleteAdmin(admin._id, admin.email)
+                              }
+                              className="text-white/30 hover:text-rose-400 transition-colors p-1"
+                              title="Delete User"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </aside>
+            </section>
           </motion.div>
         ) : (
           <motion.section

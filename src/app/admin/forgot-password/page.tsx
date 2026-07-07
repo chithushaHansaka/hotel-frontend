@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, KeyRound, Mail, ShieldCheck } from "lucide-react";
 
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/auth";
 
 export default function ForgotPasswordPage() {
   const router = useRouter();

@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { Mail, MapPin, MessageCircle, PhoneCall, Send } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:5000/api/settings";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/settings";
 
 const defaultSettings = {
   contactEmail: "info@thelux.com",

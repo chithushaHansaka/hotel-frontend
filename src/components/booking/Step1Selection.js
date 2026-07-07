@@ -18,8 +18,10 @@ import {
 } from "lucide-react";
 import { useBookingStore } from "@/store/bookingStore";
 
-const ROOMS_API_URL = "http://localhost:5000/api/rooms";
-const AVAILABILITY_API_URL = "http://localhost:5000/api/bookings/availability";
+const ROOMS_API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/rooms";
+const AVAILABILITY_API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/bookings/availability";
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1542314831-c6a4d14ecc8a?q=80&w=1600&auto=format&fit=crop";
 
@@ -96,8 +98,12 @@ export default function Step1Selection() {
   const searchParamsFromUrl = useSearchParams();
   const searchParams = useBookingStore((state) => state.searchParams);
   const selectedRooms = useBookingStore((state) => state.selectedRooms);
-  const updateSearchParams = useBookingStore((state) => state.updateSearchParams);
-  const updateRoomQuantity = useBookingStore((state) => state.updateRoomQuantity);
+  const updateSearchParams = useBookingStore(
+    (state) => state.updateSearchParams,
+  );
+  const updateRoomQuantity = useBookingStore(
+    (state) => state.updateRoomQuantity,
+  );
   const getRoomQuantity = useBookingStore((state) => state.getRoomQuantity);
   const getTotalSelectedRooms = useBookingStore(
     (state) => state.getTotalSelectedRooms,
@@ -216,14 +222,18 @@ export default function Step1Selection() {
 
       try {
         const params = new URLSearchParams({ checkIn, checkOut });
-        const response = await fetch(`${AVAILABILITY_API_URL}?${params.toString()}`);
+        const response = await fetch(
+          `${AVAILABILITY_API_URL}?${params.toString()}`,
+        );
         const payload = await response.json().catch(() => null);
 
         if (!response.ok || !isMounted) {
           return;
         }
 
-        const availabilityList = Array.isArray(payload?.data) ? payload.data : [];
+        const availabilityList = Array.isArray(payload?.data)
+          ? payload.data
+          : [];
         const availabilityMap = new Map(
           availabilityList.map((room) => [
             room._id,
@@ -252,7 +262,10 @@ export default function Step1Selection() {
 
         syncRoomAvailability(
           new Map(
-            availabilityList.map((room) => [room._id, room.availableRooms ?? 0]),
+            availabilityList.map((room) => [
+              room._id,
+              room.availableRooms ?? 0,
+            ]),
           ),
         );
       } catch {
@@ -298,7 +311,9 @@ export default function Step1Selection() {
   ]);
 
   const guestSummary = useMemo(() => {
-    const parts = [`${searchParams.adults} Adult${searchParams.adults !== 1 ? "s" : ""}`];
+    const parts = [
+      `${searchParams.adults} Adult${searchParams.adults !== 1 ? "s" : ""}`,
+    ];
 
     if (searchParams.children > 0) {
       parts.push(
@@ -444,7 +459,9 @@ export default function Step1Selection() {
                       key={item.key}
                       className="flex items-center justify-between py-3 first:pt-0 last:pb-0"
                     >
-                      <span className="text-sm text-white/80">{item.label}</span>
+                      <span className="text-sm text-white/80">
+                        {item.label}
+                      </span>
                       <div className="flex items-center gap-3">
                         <button
                           type="button"
@@ -514,8 +531,7 @@ export default function Step1Selection() {
                 const quantity = getRoomQuantity(room.id);
                 const availableRooms = room.availableRooms ?? 0;
                 const isFullyBooked = availableRooms === 0;
-                const isLowStock =
-                  availableRooms > 0 && availableRooms <= 3;
+                const isLowStock = availableRooms > 0 && availableRooms <= 3;
                 const isInCart = quantity > 0;
 
                 return (
@@ -648,8 +664,8 @@ export default function Step1Selection() {
                     Your Selection
                   </p>
                   <p className="font-medium text-white">
-                    {totalSelectedRooms} room{totalSelectedRooms !== 1 ? "s" : ""}{" "}
-                    selected
+                    {totalSelectedRooms} room
+                    {totalSelectedRooms !== 1 ? "s" : ""} selected
                     {selectedRooms.length > 1
                       ? ` across ${selectedRooms.length} residence types`
                       : ""}

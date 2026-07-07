@@ -6,7 +6,8 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import BookingModal from "@/components/BookingModal";
 
-const API_URL = "http://localhost:5000/api/dining";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/dining";
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1600&auto=format&fit=crop";
 

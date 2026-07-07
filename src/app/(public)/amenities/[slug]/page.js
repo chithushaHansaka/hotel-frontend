@@ -9,7 +9,8 @@ import { reloadRoute } from "../../../../lib/reloadNavigation";
 
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1600&q=100";
-const API_URL = "http://localhost:5000/api/amenities";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/amenities";
 
 export default function AmenityPage() {
   const routeParams = useParams();

@@ -4,7 +4,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, CalendarDays, CheckCircle2, Eye, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-const API_URL = "http://localhost:5000/api/inquiries";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/inquiries";
 
 type BookingType = "room" | "dining" | "offer";
 

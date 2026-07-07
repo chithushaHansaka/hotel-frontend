@@ -20,8 +20,10 @@ import {
   X,
 } from "lucide-react";
 
-const BOOKINGS_API = "http://localhost:5000/api/bookings";
-const INQUIRIES_API = "http://localhost:5000/api/inquiries";
+const BOOKINGS_API =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/bookings";
+const INQUIRIES_API =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/inquiries";
 const DASHBOARD_HIDE_DAYS = 7;
 
 const TABS = [
@@ -83,7 +85,9 @@ const getNights = (checkIn, checkOut) => {
 
   const start = new Date(checkIn);
   const end = new Date(checkOut);
-  const diff = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+  const diff = Math.ceil(
+    (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24),
+  );
 
   return diff > 0 ? diff : 0;
 };
@@ -279,10 +283,12 @@ function BookingExpandedPanel({ booking }) {
                 {nights} night{nights !== 1 ? "s" : ""} reserved
               </p>
               <p className="text-xs text-white/50">
-                Check-in: {booking.checkIn ? formatCreatedAt(booking.checkIn) : "—"}
+                Check-in:{" "}
+                {booking.checkIn ? formatCreatedAt(booking.checkIn) : "—"}
               </p>
               <p className="text-xs text-white/50">
-                Check-out: {booking.checkOut ? formatCreatedAt(booking.checkOut) : "—"}
+                Check-out:{" "}
+                {booking.checkOut ? formatCreatedAt(booking.checkOut) : "—"}
               </p>
             </div>
           </div>
@@ -308,7 +314,9 @@ function BookingExpandedPanel({ booking }) {
                         {nights !== 1 ? "s" : ""}
                       </p>
                     </div>
-                    <p className="text-sm text-amber-200">{formatPrice(line.lineTotal)}</p>
+                    <p className="text-sm text-amber-200">
+                      {formatPrice(line.lineTotal)}
+                    </p>
                   </div>
                 ))
               ) : (
@@ -392,7 +400,10 @@ function BookingExpandedPanel({ booking }) {
 }
 
 const getInquiryType = (inquiry) =>
-  inquiry.bookingType || inquiry.contextType || inquiry.contextTitle || "General";
+  inquiry.bookingType ||
+  inquiry.contextType ||
+  inquiry.contextTitle ||
+  "General";
 
 function InquiryExpandedPanel({ inquiry }) {
   return (
@@ -604,7 +615,8 @@ export default function ReservationsConciergePage() {
         return true;
       }
 
-      const guestName = `${booking.guest?.firstName || ""} ${booking.guest?.lastName || ""}`.toLowerCase();
+      const guestName =
+        `${booking.guest?.firstName || ""} ${booking.guest?.lastName || ""}`.toLowerCase();
       const roomNames = getBookingRoomNames(booking);
 
       return (
@@ -622,7 +634,8 @@ export default function ReservationsConciergePage() {
       return 0;
     }
 
-    return bookings.filter((booking) => !isWithinDashboardWindow(booking)).length;
+    return bookings.filter((booking) => !isWithinDashboardWindow(booking))
+      .length;
   }, [bookings, hasActiveFilters]);
 
   const filteredInquiries = useMemo(() => {
@@ -645,13 +658,21 @@ export default function ReservationsConciergePage() {
 
   const stats = useMemo(
     () => ({
-      bookings: hasActiveFilters ? filteredBookings.length : bookings.filter(isWithinDashboardWindow).length,
-      pendingBookings: filteredBookings.filter((item) => item.bookingStatus === "Pending").length,
+      bookings: hasActiveFilters
+        ? filteredBookings.length
+        : bookings.filter(isWithinDashboardWindow).length,
+      pendingBookings: filteredBookings.filter(
+        (item) => item.bookingStatus === "Pending",
+      ).length,
       inquiries: inquiries.length,
-      pendingInquiries: inquiries.filter((item) => item.status !== "Resolved").length,
+      pendingInquiries: inquiries.filter((item) => item.status !== "Resolved")
+        .length,
       revenue: filteredBookings
         .filter((item) => item.bookingStatus !== "Cancelled")
-        .reduce((sum, item) => sum + (item.grandTotal || item.totalAmount || 0), 0),
+        .reduce(
+          (sum, item) => sum + (item.grandTotal || item.totalAmount || 0),
+          0,
+        ),
     }),
     [bookings, filteredBookings, inquiries, hasActiveFilters],
   );
@@ -684,9 +705,7 @@ export default function ReservationsConciergePage() {
 
       setBookings((current) =>
         current.map((booking) =>
-          booking._id === bookingId
-            ? { ...booking, ...payload.data }
-            : booking,
+          booking._id === bookingId ? { ...booking, ...payload.data } : booking,
         ),
       );
     } catch (updateError) {
@@ -724,7 +743,9 @@ export default function ReservationsConciergePage() {
         throw new Error(payload?.message || "Failed to delete booking.");
       }
 
-      setBookings((current) => current.filter((item) => item._id !== bookingId));
+      setBookings((current) =>
+        current.filter((item) => item._id !== bookingId),
+      );
       setExpandedBookingId((current) =>
         current === bookingId ? null : current,
       );
@@ -793,8 +814,12 @@ export default function ReservationsConciergePage() {
         throw new Error(payload?.message || "Failed to delete inquiry.");
       }
 
-      setInquiries((current) => current.filter((item) => item._id !== inquiryId));
-      setExpandedInquiryId((current) => (current === inquiryId ? null : current));
+      setInquiries((current) =>
+        current.filter((item) => item._id !== inquiryId),
+      );
+      setExpandedInquiryId((current) =>
+        current === inquiryId ? null : current,
+      );
     } catch (deleteError) {
       setError(
         deleteError instanceof Error
@@ -822,8 +847,8 @@ export default function ReservationsConciergePage() {
               Reservations & Concierge
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-white/60 sm:text-base">
-              Oversee active suite reservations and guest concierge requests from
-              a single luxury operations desk.
+              Oversee active suite reservations and guest concierge requests
+              from a single luxury operations desk.
             </p>
           </div>
 
@@ -862,7 +887,11 @@ export default function ReservationsConciergePage() {
       <section className="rounded-[2rem] border border-white/10 bg-white/[0.03] shadow-[0_28px_90px_rgba(0,0,0,0.28)] backdrop-blur-md">
         <div className="border-b border-white/10 p-6 sm:p-8">
           <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-            <AdminTabs tabs={TABS} activeTab={activeTab} onChange={setActiveTab} />
+            <AdminTabs
+              tabs={TABS}
+              activeTab={activeTab}
+              onChange={setActiveTab}
+            />
 
             <label className="relative block w-full max-w-md">
               <Search
@@ -916,7 +945,11 @@ export default function ReservationsConciergePage() {
                       All Room Types
                     </option>
                     {roomTypeOptions.map((room) => (
-                      <option key={room.id} value={room.id} className="bg-zinc-950">
+                      <option
+                        key={room.id}
+                        value={room.id}
+                        className="bg-zinc-950"
+                      >
                         {room.name}
                       </option>
                     ))}
@@ -944,8 +977,8 @@ export default function ReservationsConciergePage() {
                   <span className="text-amber-200/80">
                     {hiddenPastCount} archived
                   </span>{" "}
-                  booking{hiddenPastCount !== 1 ? "s" : ""} hidden — apply filters
-                  to view historical records.
+                  booking{hiddenPastCount !== 1 ? "s" : ""} hidden — apply
+                  filters to view historical records.
                 </p>
               ) : null}
             </div>
@@ -989,24 +1022,34 @@ export default function ReservationsConciergePage() {
                         <th className="px-4 py-4 font-medium sm:px-6" />
                         <th className="px-4 py-4 font-medium sm:px-6">ID</th>
                         <th className="px-4 py-4 font-medium sm:px-6">Guest</th>
-                        <th className="px-4 py-4 font-medium sm:px-6">Suites</th>
+                        <th className="px-4 py-4 font-medium sm:px-6">
+                          Suites
+                        </th>
                         <th className="px-4 py-4 font-medium sm:px-6">Total</th>
-                        <th className="px-4 py-4 font-medium sm:px-6">Status</th>
+                        <th className="px-4 py-4 font-medium sm:px-6">
+                          Status
+                        </th>
                         <th className="px-4 py-4 font-medium sm:px-6" />
                       </tr>
                     </thead>
                     <tbody>
                       {filteredBookings.map((booking) => {
-                        const guestName = `${booking.guest?.firstName || ""} ${booking.guest?.lastName || ""}`.trim();
-                        const total = booking.grandTotal || booking.totalAmount || 0;
+                        const guestName =
+                          `${booking.guest?.firstName || ""} ${booking.guest?.lastName || ""}`.trim();
+                        const total =
+                          booking.grandTotal || booking.totalAmount || 0;
                         const isExpanded = expandedBookingId === booking._id;
-                        const compactRooms = getCompactRoomsSummary(booking.rooms);
+                        const compactRooms = getCompactRoomsSummary(
+                          booking.rooms,
+                        );
 
                         return (
                           <Fragment key={booking._id}>
                             <tr
                               className={`border-b border-white/8 transition-colors ${
-                                isExpanded ? "bg-white/[0.04]" : "hover:bg-white/[0.02]"
+                                isExpanded
+                                  ? "bg-white/[0.04]"
+                                  : "hover:bg-white/[0.02]"
                               }`}
                             >
                               <td className="px-4 py-5 align-middle sm:px-6">
@@ -1014,7 +1057,9 @@ export default function ReservationsConciergePage() {
                                   type="button"
                                   onClick={() =>
                                     setExpandedBookingId((current) =>
-                                      current === booking._id ? null : booking._id,
+                                      current === booking._id
+                                        ? null
+                                        : booking._id,
                                     )
                                   }
                                   aria-label="Expand booking details"
@@ -1037,7 +1082,9 @@ export default function ReservationsConciergePage() {
                                   type="button"
                                   onClick={() =>
                                     setExpandedBookingId((current) =>
-                                      current === booking._id ? null : booking._id,
+                                      current === booking._id
+                                        ? null
+                                        : booking._id,
                                     )
                                   }
                                   className="max-w-[160px] truncate text-left font-medium text-white hover:text-amber-100"
@@ -1082,7 +1129,9 @@ export default function ReservationsConciergePage() {
                               <td className="px-4 py-5 align-middle sm:px-6">
                                 <button
                                   type="button"
-                                  onClick={() => handleDeleteBooking(booking._id)}
+                                  onClick={() =>
+                                    handleDeleteBooking(booking._id)
+                                  }
                                   disabled={deletingBookingId === booking._id}
                                   aria-label={`Delete booking ${booking._id}`}
                                   className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-rose-400/20 bg-rose-400/10 text-rose-100 transition hover:bg-rose-400/15 disabled:cursor-not-allowed disabled:opacity-60"
@@ -1136,10 +1185,18 @@ export default function ReservationsConciergePage() {
                       <tr className="border-b border-white/10 text-[10px] uppercase tracking-[0.24em] text-white/45">
                         <th className="px-4 py-4 font-medium sm:px-6" />
                         <th className="px-4 py-4 font-medium sm:px-6">ID</th>
-                        <th className="px-4 py-4 font-medium sm:px-6">Guest Name</th>
-                        <th className="px-4 py-4 font-medium sm:px-6">Inquiry Type</th>
-                        <th className="px-4 py-4 font-medium sm:px-6">Created Date</th>
-                        <th className="px-4 py-4 font-medium sm:px-6">Status</th>
+                        <th className="px-4 py-4 font-medium sm:px-6">
+                          Guest Name
+                        </th>
+                        <th className="px-4 py-4 font-medium sm:px-6">
+                          Inquiry Type
+                        </th>
+                        <th className="px-4 py-4 font-medium sm:px-6">
+                          Created Date
+                        </th>
+                        <th className="px-4 py-4 font-medium sm:px-6">
+                          Status
+                        </th>
                         <th className="px-4 py-4 font-medium sm:px-6" />
                       </tr>
                     </thead>
@@ -1152,7 +1209,9 @@ export default function ReservationsConciergePage() {
                           <Fragment key={inquiry._id}>
                             <tr
                               className={`border-b border-white/8 transition-colors ${
-                                isExpanded ? "bg-white/[0.04]" : "hover:bg-white/[0.02]"
+                                isExpanded
+                                  ? "bg-white/[0.04]"
+                                  : "hover:bg-white/[0.02]"
                               }`}
                             >
                               <td className="px-4 py-5 align-middle sm:px-6">
@@ -1160,7 +1219,9 @@ export default function ReservationsConciergePage() {
                                   type="button"
                                   onClick={() =>
                                     setExpandedInquiryId((current) =>
-                                      current === inquiry._id ? null : inquiry._id,
+                                      current === inquiry._id
+                                        ? null
+                                        : inquiry._id,
                                     )
                                   }
                                   aria-label="Expand inquiry details"
@@ -1183,7 +1244,9 @@ export default function ReservationsConciergePage() {
                                   type="button"
                                   onClick={() =>
                                     setExpandedInquiryId((current) =>
-                                      current === inquiry._id ? null : inquiry._id,
+                                      current === inquiry._id
+                                        ? null
+                                        : inquiry._id,
                                     )
                                   }
                                   className="max-w-[180px] truncate text-left font-medium text-white hover:text-amber-100"
@@ -1228,7 +1291,9 @@ export default function ReservationsConciergePage() {
                               <td className="px-4 py-5 align-middle sm:px-6">
                                 <button
                                   type="button"
-                                  onClick={() => handleDeleteInquiry(inquiry._id)}
+                                  onClick={() =>
+                                    handleDeleteInquiry(inquiry._id)
+                                  }
                                   disabled={deletingInquiryId === inquiry._id}
                                   aria-label={`Delete inquiry from ${inquiry.name || inquiry._id}`}
                                   className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-rose-400/20 bg-rose-400/10 text-rose-100 transition hover:bg-rose-400/15 disabled:cursor-not-allowed disabled:opacity-60"

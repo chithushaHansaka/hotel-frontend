@@ -13,7 +13,8 @@ import {
 } from "lucide-react";
 import BookingModal from "../../../../components/BookingModal";
 
-const API_URL = "http://localhost:5000/api/offers";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/offers";
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1600&auto=format&fit=crop";
 

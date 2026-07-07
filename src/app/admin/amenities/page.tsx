@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { Plus, Trash2, Image as ImageIcon, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 
-const API_URL = "http://localhost:5000/api/amenities";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/amenities";
 
 export default function AdminAmenitiesPage() {
   const [amenities, setAmenities] = useState<any[]>([]);
@@ -248,7 +249,14 @@ export default function AdminAmenitiesPage() {
                 className="flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-300 to-orange-400 px-6 py-3 text-sm font-semibold text-black transition-transform hover:scale-105 disabled:opacity-50"
               >
                 {isSubmitting ? (
-                  <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  >
                     <Loader2 size={18} />
                   </motion.div>
                 ) : (
@@ -263,7 +271,10 @@ export default function AdminAmenitiesPage() {
       {/* Amenities List */}
       {isLoading ? (
         <div className="flex h-40 items-center justify-center">
-          <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}>
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          >
             <Loader2 className="text-amber-400" size={32} />
           </motion.div>
         </div>

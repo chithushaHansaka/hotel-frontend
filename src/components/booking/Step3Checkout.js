@@ -14,7 +14,8 @@ import {
 } from "lucide-react";
 import { useBookingStore } from "@/store/bookingStore";
 
-const API_URL = "http://localhost:5000/api/bookings";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/bookings";
 const LKR_TO_USD_RATE = 300;
 
 const formatLkr = (price) =>
@@ -87,7 +88,8 @@ export default function Step3Checkout() {
         price: entry.roomData.price || 0,
         quantity: entry.quantity,
         image: entry.roomData.image,
-        lineTotal: (entry.roomData.price || 0) * entry.quantity * effectiveNights,
+        lineTotal:
+          (entry.roomData.price || 0) * entry.quantity * effectiveNights,
       })),
     [selectedRooms, effectiveNights],
   );
@@ -107,15 +109,9 @@ export default function Step3Checkout() {
     [roomSubtotal, addonsSubtotal],
   );
 
-  const serviceCharge = useMemo(
-    () => Math.round(subTotal * 0.1),
-    [subTotal],
-  );
+  const serviceCharge = useMemo(() => Math.round(subTotal * 0.1), [subTotal]);
 
-  const vat = useMemo(
-    () => Math.round(subTotal * 0.15),
-    [subTotal],
-  );
+  const vat = useMemo(() => Math.round(subTotal * 0.15), [subTotal]);
 
   const grandTotal = useMemo(
     () => subTotal + serviceCharge + vat,
@@ -129,7 +125,9 @@ export default function Step3Checkout() {
 
   const handleConfirm = async () => {
     if (selectedRooms.length === 0) {
-      setError("Please select at least one room before confirming your reservation.");
+      setError(
+        "Please select at least one room before confirming your reservation.",
+      );
       return;
     }
 
@@ -208,9 +206,9 @@ export default function Step3Checkout() {
             Your Stay Awaits
           </h2>
           <p className="mx-auto mt-4 max-w-lg text-sm leading-7 text-white/70 sm:text-base">
-            Thank you, {guestDetails.firstName}. A confirmation has been prepared
-            for {guestDetails.email}. Our concierge will finalize every detail
-            before your arrival.
+            Thank you, {guestDetails.firstName}. A confirmation has been
+            prepared for {guestDetails.email}. Our concierge will finalize every
+            detail before your arrival.
           </p>
           <button
             type="button"
@@ -240,8 +238,8 @@ export default function Step3Checkout() {
           Review & Checkout
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/65 sm:text-base">
-          Confirm your curated multi-room itinerary and complete your reservation
-          with complete transparency.
+          Confirm your curated multi-room itinerary and complete your
+          reservation with complete transparency.
         </p>
       </div>
 
@@ -254,7 +252,8 @@ export default function Step3Checkout() {
               </p>
               <h3 className="mt-2 text-2xl font-semibold text-white">
                 {totalRoomCount} Room{totalRoomCount !== 1 ? "s" : ""} ·{" "}
-                {selectedRooms.length} Type{selectedRooms.length !== 1 ? "s" : ""}
+                {selectedRooms.length} Type
+                {selectedRooms.length !== 1 ? "s" : ""}
               </h3>
             </div>
 
@@ -274,7 +273,9 @@ export default function Step3Checkout() {
                     </div>
                   ) : null}
                   <div className="min-w-0 flex-1">
-                    <p className="text-base font-medium text-white">{line.name}</p>
+                    <p className="text-base font-medium text-white">
+                      {line.name}
+                    </p>
                     <p className="mt-1 text-xs text-white/45">
                       {formatAmount(line.price)} × {line.quantity} room
                       {line.quantity !== 1 ? "s" : ""} × {effectiveNights} night
@@ -312,7 +313,8 @@ export default function Step3Checkout() {
                   Guests
                 </div>
                 <p className="mt-3 text-sm text-white/85">
-                  {searchParams.adults} Adult{searchParams.adults !== 1 ? "s" : ""}
+                  {searchParams.adults} Adult
+                  {searchParams.adults !== 1 ? "s" : ""}
                 </p>
                 {searchParams.children > 0 ? (
                   <p className="mt-1 text-sm text-white/85">
@@ -379,10 +381,16 @@ export default function Step3Checkout() {
                     className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/20 px-4 py-3"
                   >
                     <div>
-                      <p className="text-sm font-medium text-white">{addon.name}</p>
-                      <p className="mt-1 text-xs text-white/45">{addon.category}</p>
+                      <p className="text-sm font-medium text-white">
+                        {addon.name}
+                      </p>
+                      <p className="mt-1 text-xs text-white/45">
+                        {addon.category}
+                      </p>
                     </div>
-                    <p className="text-sm text-amber-200">{formatAmount(addon.price)}</p>
+                    <p className="text-sm text-amber-200">
+                      {formatAmount(addon.price)}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -421,14 +429,20 @@ export default function Step3Checkout() {
                     type="button"
                     onClick={() => setCurrency(option)}
                     className={`relative rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] transition-colors ${
-                      isActive ? "text-black" : "text-white/55 hover:text-white/80"
+                      isActive
+                        ? "text-black"
+                        : "text-white/55 hover:text-white/80"
                     }`}
                   >
                     {isActive ? (
                       <motion.span
                         layoutId="checkout-currency-pill"
                         className="absolute inset-0 rounded-full bg-amber-500 shadow-[0_8px_24px_rgba(212,165,116,0.28)]"
-                        transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 420,
+                          damping: 34,
+                        }}
                       />
                     ) : null}
                     <span className="relative z-10">{option}</span>
@@ -450,8 +464,8 @@ export default function Step3Checkout() {
                     {line.quantity > 1 ? ` × ${line.quantity}` : ""}
                   </p>
                   <p className="mt-1 text-xs text-white/45">
-                    {formatAmount(line.price)} × {line.quantity} × {effectiveNights}{" "}
-                    night{effectiveNights !== 1 ? "s" : ""}
+                    {formatAmount(line.price)} × {line.quantity} ×{" "}
+                    {effectiveNights} night{effectiveNights !== 1 ? "s" : ""}
                   </p>
                 </div>
                 <p className="text-sm font-medium text-white">
@@ -474,7 +488,9 @@ export default function Step3Checkout() {
 
             <div className="flex items-center justify-between gap-4 border-t border-white/10 pt-4">
               <p className="text-sm font-medium text-white/80">Subtotal</p>
-              <p className="text-sm font-medium text-white">{formatAmount(subTotal)}</p>
+              <p className="text-sm font-medium text-white">
+                {formatAmount(subTotal)}
+              </p>
             </div>
 
             <div className="flex items-center justify-between gap-4">
@@ -486,7 +502,9 @@ export default function Step3Checkout() {
 
             <div className="flex items-center justify-between gap-4">
               <p className="text-sm text-white/55">VAT (15%)</p>
-              <p className="text-sm font-medium text-white">{formatAmount(vat)}</p>
+              <p className="text-sm font-medium text-white">
+                {formatAmount(vat)}
+              </p>
             </div>
           </div>
 
@@ -514,8 +532,8 @@ export default function Step3Checkout() {
 
           <p className="mt-6 text-xs leading-6 text-white/45">
             By confirming, you authorize our concierge team to finalize your
-            reservation and contact you with payment instructions. All charges are
-            processed in LKR on the backend.
+            reservation and contact you with payment instructions. All charges
+            are processed in LKR on the backend.
           </p>
 
           {error ? (

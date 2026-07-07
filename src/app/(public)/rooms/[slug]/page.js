@@ -15,7 +15,8 @@ import {
   Wifi,
 } from "lucide-react";
 
-const API_URL = "http://localhost:5000/api/rooms";
+const API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/rooms";
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1600&auto=format&fit=crop";
 
