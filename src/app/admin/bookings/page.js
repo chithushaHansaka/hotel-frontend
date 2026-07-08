@@ -8,6 +8,8 @@ import {
   ChevronDown,
   Clock3,
   Crown,
+  ExternalLink,
+  FileText,
   Filter,
   Mail,
   MessageSquareText,
@@ -375,6 +377,33 @@ function BookingExpandedPanel({ booking }) {
             </p>
           </div>
         ) : null}
+
+        <div className="mt-4 rounded-2xl border border-amber-400/20 bg-amber-400/[0.06] p-4">
+          <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.28em] text-amber-300/80">
+            <FileText size={12} />
+            Payment Verification
+          </div>
+          {booking.paymentSlipUrl ? (
+            <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm leading-6 text-white/70">
+                A guest payment slip has been uploaded for this reservation.
+              </p>
+              <a
+                href={booking.paymentSlipUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-amber-500 px-4 py-2.5 text-sm font-semibold text-black shadow-[0_14px_36px_rgba(212,165,116,0.22)] transition hover:bg-amber-400"
+              >
+                <ExternalLink size={14} />
+                View Uploaded Bank Slip
+              </a>
+            </div>
+          ) : (
+            <p className="mt-3 text-sm leading-6 text-white/55">
+              No slip uploaded yet.
+            </p>
+          )}
+        </div>
 
         {(booking.addons || []).length > 0 ? (
           <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">

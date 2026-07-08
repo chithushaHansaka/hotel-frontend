@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -7,9 +8,12 @@ import {
   CalendarDays,
   CheckCircle2,
   CreditCard,
+  LoaderCircle,
   Mail,
+  MessageCircle,
   Phone,
   Sparkles,
+  Upload,
   User,
 } from "lucide-react";
 import { useBookingStore } from "@/store/bookingStore";
@@ -58,6 +62,7 @@ const getNights = (checkIn, checkOut) => {
 };
 
 export default function Step3Checkout() {
+  const HOTEL_WHATSAPP = "+94713541083";
   const searchParams = useBookingStore((state) => state.searchParams);
   const selectedRooms = useBookingStore((state) => state.selectedRooms);
   const selectedAddons = useBookingStore((state) => state.selectedAddons);
@@ -66,9 +71,13 @@ export default function Step3Checkout() {
   const resetBooking = useBookingStore((state) => state.resetBooking);
 
   const [isConfirming, setIsConfirming] = useState(false);
-  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [bookingResult, setBookingResult] = useState(null);
   const [error, setError] = useState("");
   const [currency, setCurrency] = useState("LKR");
+  const [selectedSlip, setSelectedSlip] = useState(null);
+  const [isUploadingSlip, setIsUploadingSlip] = useState(false);
+  const [slipUploadMessage, setSlipUploadMessage] = useState("");
+  const [isFinished, setIsFinished] = useState(false);
 
   const formatAmount = (amount) =>
     currency === "USD" ? formatUsd(amount) : formatLkr(amount);
@@ -174,7 +183,15 @@ export default function Step3Checkout() {
         throw new Error(payload?.message || "Failed to confirm reservation.");
       }
 
-      setIsConfirmed(true);
+      setBookingResult(
+        payload?.data
+          ? {
+              ...payload.data,
+              referenceId: payload.data.referenceId || payload.referenceId,
+              status: payload.data.status || payload.status,
+            }
+          : payload,
+      );
     } catch (submitError) {
       setError(
         submitError instanceof Error
@@ -186,7 +203,59 @@ export default function Step3Checkout() {
     }
   };
 
-  if (isConfirmed) {
+  const handleSlipUpload = async () => {
+    if (!selectedSlip) {
+      return;
+    }
+
+    const referenceId =
+      bookingResult?.referenceId ||
+      bookingResult?.data?.referenceId ||
+      bookingResult?.booking?.referenceId;
+
+    if (!referenceId) {
+      setSlipUploadMessage("Booking reference is missing. Please contact us.");
+      return;
+    }
+
+    setIsUploadingSlip(true);
+    setSlipUploadMessage("");
+
+    try {
+      const formData = new FormData();
+      formData.append("slip", selectedSlip);
+
+      const response = await fetch(
+        `${API_URL}/${encodeURIComponent(referenceId)}/slip`,
+        {
+          method: "PATCH",
+          body: formData,
+        },
+      );
+      const payload = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(payload?.message || "Failed to upload payment slip.");
+      }
+
+      if (payload?.data) {
+        setBookingResult(payload.data);
+      }
+
+      setSlipUploadMessage("Slip Uploaded Successfully");
+      setIsFinished(true);
+    } catch (uploadError) {
+      setSlipUploadMessage(
+        uploadError instanceof Error
+          ? uploadError.message
+          : "Failed to upload payment slip.",
+      );
+    } finally {
+      setIsUploadingSlip(false);
+    }
+  };
+
+  if (isFinished) {
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
@@ -195,28 +264,161 @@ export default function Step3Checkout() {
         transition={{ duration: 0.45, ease: "easeOut" }}
         className="will-change-transform"
       >
-        <div className="mx-auto max-w-2xl rounded-[2rem] border border-amber-400/20 bg-amber-400/[0.05] px-8 py-16 text-center shadow-[0_28px_90px_rgba(0,0,0,0.35)]">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-amber-400/15 text-amber-300">
-            <CheckCircle2 size={40} />
+        <div className="mx-auto max-w-2xl rounded-[2rem] border border-amber-400/20 bg-amber-400/[0.05] px-8 py-16 text-center shadow-[0_28px_90px_rgba(0,0,0,0.35)] backdrop-blur-md">
+          <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full border border-amber-400/25 bg-amber-400/15 text-amber-300 shadow-[0_18px_50px_rgba(212,165,116,0.2)]">
+            <CheckCircle2 size={48} />
           </div>
           <p className="mt-8 text-[11px] uppercase tracking-[0.45em] text-amber-300/85">
-            Reservation Confirmed
+            Payment Received
           </p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            Your Stay Awaits
+            Reservation Secured
           </h2>
-          <p className="mx-auto mt-4 max-w-lg text-sm leading-7 text-white/70 sm:text-base">
-            Thank you, {guestDetails.firstName}. A confirmation has been
-            prepared for {guestDetails.email}. Our concierge will finalize every
-            detail before your arrival.
+          <p className="mx-auto mt-5 max-w-lg text-sm leading-7 text-white/70 sm:text-base">
+            Thank you. Your payment slip has been uploaded and is under review
+            by our concierge team. We look forward to welcoming you.
           </p>
-          <button
-            type="button"
-            onClick={resetBooking}
+          <Link
+            href="/"
             className="lux-action mt-10 inline-flex items-center justify-center rounded-full bg-amber-500 px-8 py-3.5 text-sm font-semibold text-black shadow-[0_18px_50px_rgba(212,165,116,0.3)] will-change-transform"
           >
-            Start a New Booking
-          </button>
+            Return to Home
+          </Link>
+        </div>
+      </motion.div>
+    );
+  }
+
+  if (bookingResult && !isFinished) {
+    const referenceId =
+      bookingResult.referenceId ||
+      bookingResult.data?.referenceId ||
+      bookingResult.booking?.referenceId ||
+      "Pending";
+    const whatsappNumber = HOTEL_WHATSAPP.replace(/\D/g, "");
+    const whatsappMessage = encodeURIComponent(
+      `Hello, here is the payment slip for my booking. Reference ID: ${referenceId}.`,
+    );
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, y: -16 }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
+        className="will-change-transform"
+      >
+        <div className="mx-auto max-w-3xl overflow-hidden rounded-[2rem] border border-amber-400/20 bg-black/20 shadow-[0_28px_90px_rgba(0,0,0,0.35)] backdrop-blur-md">
+          <div className="border-b border-white/10 bg-amber-400/[0.05] px-6 py-10 text-center sm:px-10">
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-amber-400/25 bg-amber-400/15 text-amber-300 shadow-[0_18px_50px_rgba(212,165,116,0.18)]">
+              <CheckCircle2 size={40} />
+            </div>
+            <p className="mt-8 text-[11px] uppercase tracking-[0.45em] text-amber-300/85">
+              Next Steps
+            </p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              Reservation Pending Confirmation
+            </h2>
+            <div className="mx-auto mt-6 inline-flex max-w-full items-center justify-center rounded-full border border-amber-400/25 bg-black/30 px-5 py-3 text-sm font-semibold text-amber-200 sm:text-base">
+              <span className="truncate">Booking Ref: {referenceId}</span>
+            </div>
+            <p className="mx-auto mt-5 max-w-xl text-sm leading-7 text-white/70 sm:text-base">
+              To secure your reservation, please transfer the advance payment
+              within 24 hours.
+            </p>
+          </div>
+
+          <div className="space-y-6 p-6 sm:p-10">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+              <p className="text-[10px] uppercase tracking-[0.32em] text-amber-300/80">
+                Bank Details
+              </p>
+              <div className="mt-5 grid gap-4 text-sm sm:grid-cols-3">
+                <div>
+                  <p className="text-white/45">Bank</p>
+                  <p className="mt-1 font-medium text-white">Lux Bank</p>
+                </div>
+                <div>
+                  <p className="text-white/45">Acc Name</p>
+                  <p className="mt-1 font-medium text-white">
+                    The Lux Collection
+                  </p>
+                </div>
+                <div>
+                  <p className="text-white/45">Acc No</p>
+                  <p className="mt-1 font-medium text-white">1122334455</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="lux-action inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-amber-500 px-6 py-3.5 text-sm font-semibold text-amber-500 transition-colors hover:bg-amber-500/10 will-change-transform">
+                <Upload size={16} />
+                Upload Bank Slip
+                <input
+                  type="file"
+                  accept="image/*,.pdf"
+                  className="sr-only"
+                  onChange={(event) => {
+                    setSelectedSlip(event.target.files?.[0] || null);
+                    setSlipUploadMessage("");
+                  }}
+                />
+              </label>
+
+              <a
+                href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+                target="_blank"
+                rel="noreferrer"
+                className="lux-action inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-6 py-3.5 text-sm font-semibold text-black shadow-[0_18px_50px_rgba(212,165,116,0.3)] will-change-transform"
+              >
+                <MessageCircle size={17} />
+                Send Slip via WhatsApp
+              </a>
+            </div>
+
+            {selectedSlip ? (
+              <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="min-w-0">
+                    <p className="text-[10px] uppercase tracking-[0.28em] text-white/45">
+                      Selected Slip
+                    </p>
+                    <p className="mt-1 truncate text-sm font-medium text-white">
+                      {selectedSlip.name}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleSlipUpload}
+                    disabled={isUploadingSlip}
+                    className="lux-action inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-amber-500 px-5 py-3 text-sm font-semibold text-black shadow-[0_18px_50px_rgba(212,165,116,0.22)] will-change-transform disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {isUploadingSlip ? (
+                      <LoaderCircle size={16} className="animate-spin" />
+                    ) : (
+                      <Upload size={16} />
+                    )}
+                    {isUploadingSlip ? "Submitting..." : "Submit Slip"}
+                  </button>
+                </div>
+
+                {slipUploadMessage ? (
+                  <div className="mt-4 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm font-medium text-emerald-100">
+                    {slipUploadMessage}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+
+            <button
+              type="button"
+              onClick={resetBooking}
+              className="lux-action inline-flex w-full items-center justify-center rounded-full border border-white/15 px-6 py-3.5 text-sm font-medium text-white transition-colors hover:border-amber-400/40 hover:text-amber-200 will-change-transform"
+            >
+              Start a New Booking
+            </button>
+          </div>
         </div>
       </motion.div>
     );

@@ -324,6 +324,10 @@ export default function Step1Selection() {
     return parts.join(" · ");
   }, [searchParams.adults, searchParams.children]);
 
+  const hasSelectedDates = Boolean(
+    searchParams.checkIn && searchParams.checkOut,
+  );
+
   const hasValidDates = useMemo(() => {
     if (!searchParams.checkIn || !searchParams.checkOut) {
       return false;
@@ -569,17 +573,24 @@ export default function Step1Selection() {
                         {room.description}
                       </p>
 
-                      {/* Dynamic Inventory Highlight */}
-                      {availableRooms > 0 ? (
-                        <div className="flex items-center gap-2 mt-4 text-sm font-medium text-amber-500">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.8)]"></span>
-                          {availableRooms}{" "}
-                          {availableRooms === 1 ? "Suite" : "Suites"} Available
-                        </div>
+                      {/* Dynamic Inventory Highlight - Date Dependent */}
+                      {hasSelectedDates ? (
+                        availableRooms > 0 ? (
+                          <div className="flex items-center gap-2 mt-4 text-sm font-medium text-amber-500">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.8)]"></span>
+                            {availableRooms}{" "}
+                            {availableRooms === 1 ? "Suite" : "Suites"}{" "}
+                            Available
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2 mt-4 text-sm font-medium text-red-500/80">
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                            Fully Booked
+                          </div>
+                        )
                       ) : (
-                        <div className="flex items-center gap-2 mt-4 text-sm font-medium text-red-500/80">
-                          <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
-                          Fully Booked
+                        <div className="mt-4 text-sm font-medium text-white/40">
+                          Please select dates to view availability
                         </div>
                       )}
 
