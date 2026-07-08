@@ -167,16 +167,16 @@ export default function RoomsPage() {
                       {room.description}
                     </p>
 
+                    {/* Dynamic Inventory Highlight */}
                     {inventory > 0 ? (
-                      <div className="mt-4 flex items-center gap-2 text-sm font-medium text-amber-500">
-                        <span className="h-1.5 w-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)] animate-pulse" />
+                      <div className="flex items-center gap-2 mt-4 text-sm font-medium text-amber-500">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.8)]"></span>
                         {inventory} {inventory === 1 ? "Suite" : "Suites"}{" "}
                         Available
                       </div>
                     ) : (
-                      <div className="mt-4 flex items-center gap-2 text-sm font-medium text-red-500/80">
-                        <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
-                        Fully Booked
+                      <div className="flex items-center gap-2 mt-4 text-sm font-medium text-red-500/80">
+                        <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
                       </div>
                     )}
 

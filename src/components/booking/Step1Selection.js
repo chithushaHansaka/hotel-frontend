@@ -559,26 +559,6 @@ export default function Step1Selection() {
                         }`}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-
-                      {isFullyBooked ? (
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/45 backdrop-blur-[2px]">
-                          <div className="rounded-full border border-rose-400/30 bg-black/70 px-5 py-2 text-[11px] uppercase tracking-[0.32em] text-rose-100 shadow-[0_12px_40px_rgba(0,0,0,0.45)]">
-                            Fully Booked
-                          </div>
-                        </div>
-                      ) : null}
-
-                      {!isFullyBooked && isLowStock ? (
-                        <div className="absolute left-4 top-4 rounded-full border border-amber-400/35 bg-amber-500/20 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.28em] text-amber-100 shadow-[0_8px_24px_rgba(212,165,116,0.25)] backdrop-blur-sm">
-                          Only {availableRooms} Remaining
-                        </div>
-                      ) : null}
-
-                      {!isFullyBooked && isInCart ? (
-                        <div className="absolute right-4 top-4 rounded-full border border-amber-400/30 bg-amber-400/15 px-3 py-1 text-[10px] uppercase tracking-[0.28em] text-amber-100">
-                          In Cart · {quantity}
-                        </div>
-                      ) : null}
                     </div>
 
                     <div className="p-6">
@@ -588,6 +568,20 @@ export default function Step1Selection() {
                       <p className="mt-3 line-clamp-3 text-sm leading-7 text-white/65">
                         {room.description}
                       </p>
+
+                      {/* Dynamic Inventory Highlight */}
+                      {availableRooms > 0 ? (
+                        <div className="flex items-center gap-2 mt-4 text-sm font-medium text-amber-500">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.8)]"></span>
+                          {availableRooms}{" "}
+                          {availableRooms === 1 ? "Suite" : "Suites"} Available
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2 mt-4 text-sm font-medium text-red-500/80">
+                          <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                          Fully Booked
+                        </div>
+                      )}
 
                       <div className="mt-5 flex flex-wrap gap-3 text-xs text-white/55">
                         <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/25 px-3 py-1.5">
