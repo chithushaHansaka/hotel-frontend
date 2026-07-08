@@ -27,14 +27,14 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning={true}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased bg-background text-foreground`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased bg-[#0a0a0a] text-white`}
     >
       <head>
         <Script id="theme-init" strategy="beforeInteractive">
           {`(function(){try{var theme=localStorage.getItem('theme');var prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;var nextTheme=theme==='light'||theme==='dark'?theme:(prefersDark?'dark':'light');document.documentElement.classList.toggle('dark', nextTheme==='dark');document.documentElement.style.colorScheme=nextTheme;}catch(e){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}})();`}
         </Script>
       </head>
-      <body className="min-h-screen flex flex-col bg-background text-foreground overflow-x-hidden">
+      <body className="min-h-screen flex flex-col bg-[#0a0a0a] text-white antialiased overflow-x-hidden">
         {children}
       </body>
     </html>

@@ -412,8 +412,8 @@ export default function Page() {
         </div>
       </section>
 
-      <section className="relative flex min-h-[50vh] items-center justify-center py-32">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1920&q=100')] bg-fixed bg-cover bg-center" />
+      <section className="relative flex min-h-[40vh] items-center justify-center overflow-hidden py-16 md:py-32">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1920&q=100')] bg-cover bg-center bg-scroll md:bg-fixed" />
         <div className="absolute inset-0 bg-black/50" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -421,9 +421,9 @@ export default function Page() {
           viewport={{ once: true, amount: 0.1, margin: "0px 0px 100px 0px" }}
           style={{ willChange: "transform, opacity" }}
           transition={{ duration: 1.1, ease: "easeOut" }}
-          className="relative z-10 mx-auto max-w-4xl px-6 text-center transform-gpu"
+          className="relative z-10 mx-auto max-w-4xl px-4 md:px-8 lg:px-16 text-center transform-gpu"
         >
-          <p className="text-3xl font-light italic leading-relaxed tracking-wide text-white md:text-5xl">
+          <p className="text-3xl font-light italic leading-snug tracking-wide text-white sm:text-4xl md:text-5xl lg:text-6xl">
             “Where time stands still, and luxury is profoundly personal.”
           </p>
         </motion.div>

@@ -135,6 +135,7 @@ export default function RoomsPage() {
               const sizeLabel = room.size || "Luxury suite";
               const bedLabel = room.bed || "Signature bed";
               const viewLabel = room.view || "Refined views";
+              const inventory = room.inventory ?? room.availableRooms ?? 0;
 
               return (
                 <motion.article
@@ -165,6 +166,19 @@ export default function RoomsPage() {
                     <p className="mt-5 max-w-xl text-base leading-8 text-white/72 sm:text-lg">
                       {room.description}
                     </p>
+
+                    {inventory > 0 ? (
+                      <div className="mt-4 flex items-center gap-2 text-sm font-medium text-amber-500">
+                        <span className="h-1.5 w-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)] animate-pulse" />
+                        {inventory} {inventory === 1 ? "Suite" : "Suites"}{" "}
+                        Available
+                      </div>
+                    ) : (
+                      <div className="mt-4 flex items-center gap-2 text-sm font-medium text-red-500/80">
+                        <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
+                        Fully Booked
+                      </div>
+                    )}
 
                     <div className="mt-8 grid gap-4 sm:grid-cols-2">
                       <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/20 p-4">
