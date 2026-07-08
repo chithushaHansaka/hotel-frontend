@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { Bed, Eye, Maximize, Map, Star } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import BookingModal from "@/components/BookingModal";
 
 const API_URL =
   "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/rooms";
@@ -33,7 +32,6 @@ export default function RoomsPage() {
   const [rooms, setRooms] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [selectedRoom, setSelectedRoom] = useState("");
 
   useEffect(() => {
     let isMounted = true;
@@ -222,13 +220,12 @@ export default function RoomsPage() {
                       >
                         View Details
                       </Link>
-                      <button
-                        type="button"
-                        onClick={() => setSelectedRoom(room.name)}
+                      <Link
+                        href="/book"
                         className="inline-flex items-center justify-center rounded-full bg-amber-500 px-5 py-3 text-sm font-semibold text-black shadow-[0_18px_50px_rgba(212,165,116,0.3)] transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_60px_rgba(212,165,116,0.45)]"
                       >
                         Book Now
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </motion.article>
@@ -237,13 +234,6 @@ export default function RoomsPage() {
           </div>
         )}
       </section>
-
-      <BookingModal
-        isOpen={Boolean(selectedRoom)}
-        onClose={() => setSelectedRoom("")}
-        type="room"
-        contextTitle={selectedRoom || ""}
-      />
     </main>
   );
 }

@@ -8,12 +8,14 @@ import {
   Phone,
   Sparkles,
 } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const API_URL =
   "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/settings";
 
 export default function BookingBar() {
+  const pathname = usePathname();
   const [isExpanded, setIsExpanded] = useState(false);
   const [whatsappNumber, setWhatsappNumber] = useState("");
   const [contactPhone, setContactPhone] = useState("");
@@ -52,91 +54,92 @@ export default function BookingBar() {
     ? `tel:${contactPhone.replace(/\s/g, "")}`
     : undefined;
 
+  if (pathname === "/book" || pathname.includes("book")) {
+    return null;
+  }
+
   return (
     <motion.aside
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed bottom-6 right-6 z-50 w-[20rem] overflow-hidden rounded-[1.75rem] border border-amber-400/15 bg-black/70 shadow-[0_24px_80px_rgba(0,0,0,0.5)] backdrop-blur-xl will-change-transform sm:w-[22rem]"
+      className="fixed bottom-8 right-6 z-40 flex flex-col items-end gap-3"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,165,116,0.14),transparent_55%)]" />
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => setIsExpanded((value) => !value)}
+          className="lux-action flex w-[min(22rem,calc(100vw-3rem))] items-center gap-3 rounded-full border border-amber-400/20 bg-black/80 px-4 py-3.5 text-left text-white shadow-[0_24px_70px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-transform hover:-translate-y-0.5"
+          aria-label={
+            isExpanded ? "Minimize concierge widget" : "Open concierge widget"
+          }
+        >
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-amber-400/20 bg-amber-400/10 text-amber-300">
+            <Sparkles size={18} />
+          </div>
 
-      <div className="relative p-4">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-amber-400/20 bg-amber-400/10 text-amber-300">
-              <Sparkles size={18} />
+          <div className="min-w-0 flex-1">
+            <div className="text-[11px] uppercase tracking-[0.32em] text-amber-200/90">
+              Digital Concierge
             </div>
-            <div>
-              <div className="text-[11px] uppercase tracking-[0.32em] text-amber-200/90">
-                Digital Concierge
-              </div>
-              <div className="text-[11px] text-white/45">
-                Private assistance, instantly
-              </div>
+            <div className="mt-1 text-[11px] text-white/45 sm:text-xs">
+              Private assistance, instantly
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setIsExpanded((value) => !value)}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-colors hover:border-amber-400/40 hover:text-amber-300"
-            aria-label={
-              isExpanded
-                ? "Minimize concierge widget"
-                : "Expand concierge widget"
-            }
-          >
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70">
             {isExpanded ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
-          </button>
-        </div>
+          </div>
+        </button>
 
         {isExpanded ? (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            className="mt-4 space-y-3"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="absolute bottom-full right-0 mb-3 w-[min(20rem,calc(100vw-3rem))] overflow-hidden rounded-[1.5rem] border border-amber-400/15 bg-black/80 p-4 shadow-[0_24px_80px_rgba(0,0,0,0.55)] backdrop-blur-xl"
           >
-            <p className="text-sm leading-7 text-white/60">
-              Connect with our concierge for bespoke reservations, dining, and
-              curated experiences.
-            </p>
+            <div className="space-y-3">
+              <p className="text-sm leading-7 text-white/60">
+                Connect with our concierge for bespoke reservations, dining, and
+                curated experiences.
+              </p>
 
-            <a
-              href={whatsappHref || "#"}
-              target={whatsappHref ? "_blank" : undefined}
-              rel={whatsappHref ? "noopener noreferrer" : undefined}
-              onClick={(event) => {
-                if (!whatsappHref) {
-                  event.preventDefault();
-                }
-              }}
-              className={`lux-action inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-semibold will-change-transform ${
-                whatsappHref
-                  ? "bg-amber-500 text-black shadow-[0_18px_50px_rgba(212,165,116,0.3)]"
-                  : "cursor-not-allowed border border-white/10 bg-white/5 text-white/35"
-              }`}
-            >
-              <MessageCircle size={16} />
-              Message on WhatsApp
-            </a>
+              <a
+                href={whatsappHref || "#"}
+                target={whatsappHref ? "_blank" : undefined}
+                rel={whatsappHref ? "noopener noreferrer" : undefined}
+                onClick={(event) => {
+                  if (!whatsappHref) {
+                    event.preventDefault();
+                  }
+                }}
+                className={`lux-action inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-semibold will-change-transform ${
+                  whatsappHref
+                    ? "bg-amber-500 text-black shadow-[0_18px_50px_rgba(212,165,116,0.3)]"
+                    : "cursor-not-allowed border border-white/10 bg-white/5 text-white/35"
+                }`}
+              >
+                <MessageCircle size={16} />
+                Message on WhatsApp
+              </a>
 
-            <a
-              href={phoneHref || "#"}
-              onClick={(event) => {
-                if (!phoneHref) {
-                  event.preventDefault();
-                }
-              }}
-              className={`lux-action inline-flex w-full items-center justify-center gap-2 rounded-full border px-4 py-3 text-sm font-medium will-change-transform ${
-                phoneHref
-                  ? "border-amber-400/25 bg-amber-400/10 text-amber-100 hover:border-amber-400/40 hover:text-white"
-                  : "cursor-not-allowed border-white/10 bg-white/5 text-white/35"
-              }`}
-            >
-              <Phone size={16} />
-              Call Concierge
-            </a>
+              <a
+                href={phoneHref || "#"}
+                onClick={(event) => {
+                  if (!phoneHref) {
+                    event.preventDefault();
+                  }
+                }}
+                className={`lux-action inline-flex w-full items-center justify-center gap-2 rounded-full border px-4 py-3 text-sm font-medium will-change-transform ${
+                  phoneHref
+                    ? "border-amber-400/25 bg-amber-400/10 text-amber-100 hover:border-amber-400/40 hover:text-white"
+                    : "cursor-not-allowed border-white/10 bg-white/5 text-white/35"
+                }`}
+              >
+                <Phone size={16} />
+                Call Concierge
+              </a>
+            </div>
           </motion.div>
         ) : null}
       </div>

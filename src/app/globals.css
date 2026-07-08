@@ -1,6 +1,15 @@
 @import "tailwindcss";
 
 :root {
+  color-scheme: light;
+  --background: #f4efe7;
+  --foreground: #131313;
+  --muted: #5f6872;
+  --accent: #b88b45;
+}
+
+html.dark {
+  color-scheme: dark;
   --background: #050607;
   --foreground: #f5f2eb;
   --muted: #9aa4ad;
@@ -19,6 +28,7 @@
 html,
 body {
   height: 100%;
+  overflow-x: hidden;
 }
 
 body {

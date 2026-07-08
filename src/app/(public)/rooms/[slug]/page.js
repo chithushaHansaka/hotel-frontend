@@ -267,10 +267,10 @@ export default function RoomDetailPage() {
               </p>
 
               <Link
-                href={`/book?roomId=${room._id}`}
+                href="/book"
                 className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-amber-500 px-5 py-3.5 text-sm font-semibold text-black shadow-[0_18px_50px_rgba(212,165,116,0.3)] transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_60px_rgba(212,165,116,0.45)]"
               >
-                Book This Room
+                Book Now
               </Link>
             </div>
           </aside>

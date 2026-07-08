@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -26,9 +27,14 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning={true}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased bg-black text-white`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased bg-background text-foreground`}
     >
-      <body className="min-h-screen flex flex-col bg-[radial-gradient(ellipse_at_top_right,_#0b0b0b,_#071014)]">
+      <head>
+        <Script id="theme-init" strategy="beforeInteractive">
+          {`(function(){try{var theme=localStorage.getItem('theme');var prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;var nextTheme=theme==='light'||theme==='dark'?theme:(prefersDark?'dark':'light');document.documentElement.classList.toggle('dark', nextTheme==='dark');document.documentElement.style.colorScheme=nextTheme;}catch(e){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}})();`}
+        </Script>
+      </head>
+      <body className="min-h-screen flex flex-col bg-background text-foreground overflow-x-hidden">
         {children}
       </body>
     </html>

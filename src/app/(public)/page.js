@@ -325,7 +325,7 @@ export default function Page() {
           </p>
         </motion.div>
 
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
+        <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {amenities.map((amenity, index) => {
             const safeImages =
               amenity.images?.length > 0

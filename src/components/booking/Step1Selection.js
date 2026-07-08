@@ -394,7 +394,7 @@ export default function Step1Selection() {
           </p>
         </div>
 
-        <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 shadow-[0_28px_90px_rgba(0,0,0,0.35)] backdrop-blur-md sm:p-8">
+        <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-5 shadow-[0_28px_90px_rgba(0,0,0,0.35)] backdrop-blur-md sm:p-8">
           <div className="grid gap-4 lg:grid-cols-[1fr_1fr_auto]">
             <label className="block">
               <span className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-white/55">
@@ -510,7 +510,7 @@ export default function Step1Selection() {
           </div>
 
           {isLoading ? (
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
               {Array.from({ length: 3 }).map((_, index) => (
                 <div
                   key={index}
@@ -526,7 +526,7 @@ export default function Step1Selection() {
               ))}
             </div>
           ) : (
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
               {rooms.map((room, index) => {
                 const quantity = getRoomQuantity(room.id);
                 const availableRooms = room.availableRooms ?? 0;
@@ -652,10 +652,10 @@ export default function Step1Selection() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 24 }}
             transition={{ duration: 0.35, ease: "easeOut" }}
-            className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#050607]/90 px-6 py-4 backdrop-blur-xl"
+            className="fixed inset-x-0 bottom-0 z-[100] border-t border-white/10 bg-[#050607]/90 px-4 py-4 backdrop-blur-xl sm:px-6"
           >
             <div className="container mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
-              <div className="flex items-center gap-3 text-sm text-white/75">
+              <div className="flex items-center gap-3 text-center text-sm text-white/75 sm:text-left">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full border border-amber-400/25 bg-amber-400/10 text-amber-200">
                   <ShoppingBag size={18} />
                 </div>
@@ -677,7 +677,7 @@ export default function Step1Selection() {
                 type="button"
                 onClick={handleContinue}
                 disabled={!canContinue}
-                className="lux-action inline-flex w-full items-center justify-center gap-2 rounded-full bg-amber-500 px-8 py-3.5 text-sm font-semibold text-black shadow-[0_18px_50px_rgba(212,165,116,0.3)] will-change-transform disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                className="lux-action inline-flex w-full items-center justify-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-black shadow-[0_18px_50px_rgba(212,165,116,0.3)] will-change-transform disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto sm:px-8 sm:py-3.5"
               >
                 {isCheckingAvailability
                   ? "Checking Availability..."
