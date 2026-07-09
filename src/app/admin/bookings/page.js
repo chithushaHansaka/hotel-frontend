@@ -94,6 +94,9 @@ const getNights = (checkIn, checkOut) => {
   return diff > 0 ? diff : 0;
 };
 
+const getBookingReference = (booking) =>
+  booking.referenceId || booking._id.slice(-8).toUpperCase();
+
 const startOfDay = (value) => {
   const date = new Date(value);
   date.setHours(0, 0, 0, 0);
@@ -225,6 +228,7 @@ function BookingExpandedPanel({ booking }) {
   const vat = booking.taxes?.vat ?? 0;
   const subTotal = booking.subTotal ?? 0;
   const grandTotal = booking.grandTotal || booking.totalAmount || 0;
+  const bookingReference = getBookingReference(booking);
 
   const roomLines = (booking.rooms || []).map((line) => ({
     id: `${line.room?._id || line.room}-${line.quantity}`,
@@ -257,6 +261,9 @@ function BookingExpandedPanel({ booking }) {
             <div className="mt-3 space-y-2 text-sm text-white/80">
               <p className="font-medium text-white">
                 {booking.guest?.firstName} {booking.guest?.lastName}
+              </p>
+              <p className="font-mono text-xs text-amber-200/80">
+                {bookingReference}
               </p>
               <p className="flex items-center gap-2">
                 <Mail size={13} className="text-amber-300" />
@@ -647,11 +654,13 @@ export default function ReservationsConciergePage() {
       const guestName =
         `${booking.guest?.firstName || ""} ${booking.guest?.lastName || ""}`.toLowerCase();
       const roomNames = getBookingRoomNames(booking);
+      const bookingReference = getBookingReference(booking).toLowerCase();
 
       return (
         guestName.includes(query) ||
         roomNames.includes(query) ||
         getCompactRoomsSummary(booking.rooms).toLowerCase().includes(query) ||
+        bookingReference.includes(query) ||
         booking._id?.toLowerCase().includes(query) ||
         booking.guest?.email?.toLowerCase().includes(query)
       );
@@ -1071,6 +1080,7 @@ export default function ReservationsConciergePage() {
                         const compactRooms = getCompactRoomsSummary(
                           booking.rooms,
                         );
+                        const bookingReference = getBookingReference(booking);
 
                         return (
                           <Fragment key={booking._id}>
@@ -1104,7 +1114,7 @@ export default function ReservationsConciergePage() {
                                 </button>
                               </td>
                               <td className="px-4 py-5 align-middle font-mono text-[11px] text-amber-200/85 sm:px-6">
-                                {booking._id.slice(-8).toUpperCase()}
+                                {bookingReference}
                               </td>
                               <td className="px-4 py-5 align-middle sm:px-6">
                                 <button
@@ -1162,7 +1172,7 @@ export default function ReservationsConciergePage() {
                                     handleDeleteBooking(booking._id)
                                   }
                                   disabled={deletingBookingId === booking._id}
-                                  aria-label={`Delete booking ${booking._id}`}
+                                  aria-label={`Delete booking ${bookingReference}`}
                                   className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-rose-400/20 bg-rose-400/10 text-rose-100 transition hover:bg-rose-400/15 disabled:cursor-not-allowed disabled:opacity-60"
                                 >
                                   <Trash2 size={12} />

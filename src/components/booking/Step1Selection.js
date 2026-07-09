@@ -121,6 +121,11 @@ export default function Step1Selection() {
   const hasAppliedUrlRoom = useRef(false);
 
   const totalSelectedRooms = getTotalSelectedRooms();
+  const today = new Date().toISOString().split("T")[0];
+  const checkoutMinDate =
+    searchParams.checkIn && searchParams.checkIn > today
+      ? searchParams.checkIn
+      : today;
 
   useEffect(() => {
     let isMounted = true;
@@ -408,6 +413,7 @@ export default function Step1Selection() {
               <input
                 type="date"
                 value={searchParams.checkIn}
+                min={today}
                 onChange={(event) =>
                   updateSearchParams({ checkIn: event.target.value })
                 }
@@ -423,7 +429,7 @@ export default function Step1Selection() {
               <input
                 type="date"
                 value={searchParams.checkOut}
-                min={searchParams.checkIn || undefined}
+                min={checkoutMinDate}
                 onChange={(event) =>
                   updateSearchParams({ checkOut: event.target.value })
                 }
@@ -535,7 +541,6 @@ export default function Step1Selection() {
                 const quantity = getRoomQuantity(room.id);
                 const availableRooms = room.availableRooms ?? 0;
                 const isFullyBooked = availableRooms === 0;
-                const isLowStock = availableRooms > 0 && availableRooms <= 3;
                 const isInCart = quantity > 0;
 
                 return (

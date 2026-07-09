@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Crown } from "lucide-react";
 import { useBookingStore } from "@/store/bookingStore";
@@ -17,6 +17,10 @@ const STEPS = [
 export default function BookPage() {
   const currentStep = useBookingStore((state) => state.currentStep);
   const setStep = useBookingStore((state) => state.setStep);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentStep]);
 
   const renderStep = () => {
     switch (currentStep) {

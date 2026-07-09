@@ -66,6 +66,11 @@ type SiteSettings = {
   contactEmail: string;
   contactPhone: string;
   whatsappNumber: string;
+  bankDetails: {
+    bankName: string;
+    accountName: string;
+    accountNumber: string;
+  };
   footerAddress: string;
 };
 
@@ -87,6 +92,11 @@ const defaultSettings: SiteSettings = {
   contactEmail: "info@thelux.com",
   contactPhone: "+94 11 234 5678",
   whatsappNumber: "+94 77 123 4567",
+  bankDetails: {
+    bankName: "Lux Bank",
+    accountName: "The Lux Collection",
+    accountNumber: "1122334455",
+  },
   footerAddress: "123 Luxury Avenue, Colombo, Sri Lanka",
 };
 
@@ -166,6 +176,17 @@ export default function AdminSettingsPage() {
               payload?.data?.contactPhone || defaultSettings.contactPhone,
             whatsappNumber:
               payload?.data?.whatsappNumber || defaultSettings.whatsappNumber,
+            bankDetails: {
+              bankName:
+                payload?.data?.bankDetails?.bankName ||
+                defaultSettings.bankDetails.bankName,
+              accountName:
+                payload?.data?.bankDetails?.accountName ||
+                defaultSettings.bankDetails.accountName,
+              accountNumber:
+                payload?.data?.bankDetails?.accountNumber ||
+                defaultSettings.bankDetails.accountNumber,
+            },
             footerAddress:
               payload?.data?.footerAddress || defaultSettings.footerAddress,
           });
@@ -226,6 +247,7 @@ export default function AdminSettingsPage() {
       formData.append("contactEmail", settings.contactEmail);
       formData.append("contactPhone", settings.contactPhone);
       formData.append("whatsappNumber", settings.whatsappNumber);
+      formData.append("bankDetails", JSON.stringify(settings.bankDetails));
       formData.append("footerAddress", settings.footerAddress);
 
       if (logoFile) formData.append("logo", logoFile);
@@ -595,6 +617,29 @@ export default function AdminSettingsPage() {
                   </div>
                 </section>
 
+                {error ? (
+                  <div className="rounded-2xl border border-rose-400/20 bg-rose-400/10 px-4 py-3 text-sm text-rose-100">
+                    {error}
+                  </div>
+                ) : null}
+                {message ? (
+                  <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100">
+                    {message}
+                  </div>
+                ) : null}
+
+                <button
+                  type="submit"
+                  disabled={isSaving || isLoading}
+                  className="lux-action inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 px-6 py-3.5 text-sm font-semibold text-black shadow-[0_18px_50px_rgba(201,163,107,0.32)] transition disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  <Save size={16} />
+                  {isSaving ? "Saving..." : "Save Settings"}
+                </button>
+              </form>
+
+              {/* --- Right Side Column (Live Preview + Admin Management) --- */}
+              <aside className="space-y-6">
                 <section className="rounded-[1.75rem] border border-white/10 bg-white/5 p-5">
                   <div className="text-xs uppercase tracking-[0.3em] text-amber-200/80">
                     Contact Details
@@ -667,29 +712,71 @@ export default function AdminSettingsPage() {
                   </div>
                 </section>
 
-                {error ? (
-                  <div className="rounded-2xl border border-rose-400/20 bg-rose-400/10 px-4 py-3 text-sm text-rose-100">
-                    {error}
+                <section className="rounded-[1.75rem] border border-white/10 bg-white/5 p-5">
+                  <div className="text-xs uppercase tracking-[0.3em] text-amber-200/80">
+                    Bank Details
                   </div>
-                ) : null}
-                {message ? (
-                  <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100">
-                    {message}
+                  <div className="mt-5 grid gap-4 md:grid-cols-2">
+                    <label className="block">
+                      <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                        Bank Name
+                      </span>
+                      <input
+                        type="text"
+                        value={settings.bankDetails.bankName}
+                        onChange={(event) =>
+                          setSettings((current) => ({
+                            ...current,
+                            bankDetails: {
+                              ...current.bankDetails,
+                              bankName: event.target.value,
+                            },
+                          }))
+                        }
+                        className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-amber-300/45"
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                        Account Name
+                      </span>
+                      <input
+                        type="text"
+                        value={settings.bankDetails.accountName}
+                        onChange={(event) =>
+                          setSettings((current) => ({
+                            ...current,
+                            bankDetails: {
+                              ...current.bankDetails,
+                              accountName: event.target.value,
+                            },
+                          }))
+                        }
+                        className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-amber-300/45"
+                      />
+                    </label>
+                    <label className="block md:col-span-2">
+                      <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                        Account Number
+                      </span>
+                      <input
+                        type="text"
+                        value={settings.bankDetails.accountNumber}
+                        onChange={(event) =>
+                          setSettings((current) => ({
+                            ...current,
+                            bankDetails: {
+                              ...current.bankDetails,
+                              accountNumber: event.target.value,
+                            },
+                          }))
+                        }
+                        className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-amber-300/45"
+                      />
+                    </label>
                   </div>
-                ) : null}
+                </section>
 
-                <button
-                  type="submit"
-                  disabled={isSaving || isLoading}
-                  className="lux-action inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 px-6 py-3.5 text-sm font-semibold text-black shadow-[0_18px_50px_rgba(201,163,107,0.32)] transition disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  <Save size={16} />
-                  {isSaving ? "Saving..." : "Save Settings"}
-                </button>
-              </form>
-
-              {/* --- Right Side Column (Live Preview + Admin Management) --- */}
-              <aside className="space-y-6">
                 <div className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.03))] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-2xl sm:p-8">
                   <div className="text-xs uppercase tracking-[0.3em] text-white/45">
                     Live Preview
@@ -726,6 +813,17 @@ export default function AdminSettingsPage() {
                       <p>{settings.contactPhone}</p>
                       <p>{settings.whatsappNumber}</p>
                       <p>{settings.footerAddress}</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-black/25 p-5">
+                    <div className="text-xs uppercase tracking-[0.28em] text-white/45">
+                      Bank Preview
+                    </div>
+                    <div className="mt-4 space-y-3 text-sm text-white/70">
+                      <p>{settings.bankDetails.bankName}</p>
+                      <p>{settings.bankDetails.accountName}</p>
+                      <p>{settings.bankDetails.accountNumber}</p>
                     </div>
                   </div>
                 </div>

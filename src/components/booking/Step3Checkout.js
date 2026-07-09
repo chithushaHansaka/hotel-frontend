@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -20,7 +20,17 @@ import { useBookingStore } from "@/store/bookingStore";
 
 const API_URL =
   "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/bookings";
-const LKR_TO_USD_RATE = 300;
+const SETTINGS_API_URL =
+  "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/settings";
+
+const defaultCheckoutSettings = {
+  whatsappNumber: "+94 77 123 4567",
+  bankDetails: {
+    bankName: "Lux Bank",
+    accountName: "The Lux Collection",
+    accountNumber: "1122334455",
+  },
+};
 
 const formatLkr = (price) =>
   new Intl.NumberFormat("en-LK", {
@@ -29,12 +39,12 @@ const formatLkr = (price) =>
     maximumFractionDigits: 0,
   }).format(price);
 
-const formatUsd = (lkrAmount) =>
+const formatUsd = (lkrAmount, usdRate) =>
   new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
     maximumFractionDigits: 0,
-  }).format((Number(lkrAmount) || 0) / LKR_TO_USD_RATE);
+  }).format((Number(lkrAmount) || 0) / usdRate);
 
 const formatDate = (value) => {
   if (!value) {
@@ -62,7 +72,6 @@ const getNights = (checkIn, checkOut) => {
 };
 
 export default function Step3Checkout() {
-  const HOTEL_WHATSAPP = "+94713541083";
   const searchParams = useBookingStore((state) => state.searchParams);
   const selectedRooms = useBookingStore((state) => state.selectedRooms);
   const selectedAddons = useBookingStore((state) => state.selectedAddons);
@@ -78,9 +87,64 @@ export default function Step3Checkout() {
   const [isUploadingSlip, setIsUploadingSlip] = useState(false);
   const [slipUploadMessage, setSlipUploadMessage] = useState("");
   const [isFinished, setIsFinished] = useState(false);
+  const [checkoutSettings, setCheckoutSettings] = useState(
+    defaultCheckoutSettings,
+  );
+  const [usdRate, setUsdRate] = useState(300);
 
   const formatAmount = (amount) =>
-    currency === "USD" ? formatUsd(amount) : formatLkr(amount);
+    currency === "USD" ? formatUsd(amount, usdRate) : formatLkr(amount);
+
+  useEffect(() => {
+    const loadCheckoutSettings = async () => {
+      try {
+        const response = await fetch(SETTINGS_API_URL);
+        const payload = await response.json().catch(() => null);
+        const data = payload?.data;
+
+        if (!response.ok || !data) {
+          return;
+        }
+
+        setCheckoutSettings({
+          whatsappNumber:
+            data.whatsappNumber || defaultCheckoutSettings.whatsappNumber,
+          bankDetails: {
+            bankName:
+              data.bankDetails?.bankName ||
+              defaultCheckoutSettings.bankDetails.bankName,
+            accountName:
+              data.bankDetails?.accountName ||
+              defaultCheckoutSettings.bankDetails.accountName,
+            accountNumber:
+              data.bankDetails?.accountNumber ||
+              defaultCheckoutSettings.bankDetails.accountNumber,
+          },
+        });
+      } catch {
+        // Keep checkout defaults if settings are temporarily unavailable.
+      }
+    };
+
+    const loadUsdRate = async () => {
+      try {
+        const response = await fetch(
+          "https://api.exchangerate-api.com/v4/latest/LKR",
+        );
+        const data = await response.json().catch(() => null);
+        const nextRate = 1 / Number(data?.rates?.USD);
+
+        if (Number.isFinite(nextRate) && nextRate > 0) {
+          setUsdRate(nextRate);
+        }
+      } catch {
+        // Keep the fallback rate if the live exchange-rate service is down.
+      }
+    };
+
+    loadCheckoutSettings();
+    loadUsdRate();
+  }, []);
 
   const nights = useMemo(
     () => getNights(searchParams.checkIn, searchParams.checkOut),
@@ -295,10 +359,11 @@ export default function Step3Checkout() {
       bookingResult.data?.referenceId ||
       bookingResult.booking?.referenceId ||
       "Pending";
-    const whatsappNumber = HOTEL_WHATSAPP.replace(/\D/g, "");
+    const whatsappNumber = checkoutSettings.whatsappNumber.replace(/\D/g, "");
     const whatsappMessage = encodeURIComponent(
       `Hello, here is the payment slip for my booking. Reference ID: ${referenceId}.`,
     );
+    const { bankDetails } = checkoutSettings;
 
     return (
       <motion.div
@@ -336,17 +401,21 @@ export default function Step3Checkout() {
               <div className="mt-5 grid gap-4 text-sm sm:grid-cols-3">
                 <div>
                   <p className="text-white/45">Bank</p>
-                  <p className="mt-1 font-medium text-white">Lux Bank</p>
+                  <p className="mt-1 font-medium text-white">
+                    {bankDetails.bankName}
+                  </p>
                 </div>
                 <div>
                   <p className="text-white/45">Acc Name</p>
                   <p className="mt-1 font-medium text-white">
-                    The Lux Collection
+                    {bankDetails.accountName}
                   </p>
                 </div>
                 <div>
                   <p className="text-white/45">Acc No</p>
-                  <p className="mt-1 font-medium text-white">1122334455</p>
+                  <p className="mt-1 font-medium text-white">
+                    {bankDetails.accountNumber}
+                  </p>
                 </div>
               </div>
             </div>
@@ -370,7 +439,13 @@ export default function Step3Checkout() {
                 href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noreferrer"
+                aria-disabled={!whatsappNumber}
                 className="lux-action inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-6 py-3.5 text-sm font-semibold text-black shadow-[0_18px_50px_rgba(212,165,116,0.3)] will-change-transform"
+                onClick={(event) => {
+                  if (!whatsappNumber) {
+                    event.preventDefault();
+                  }
+                }}
               >
                 <MessageCircle size={17} />
                 Send Slip via WhatsApp
@@ -727,7 +802,7 @@ export default function Step3Checkout() {
             </div>
             <p className="text-xs text-white/45">
               {currency === "USD"
-                ? "Approx. USD · 1 USD = 300 LKR"
+                ? `Approx. USD · 1 USD = ${Math.round(usdRate)} LKR`
                 : "All taxes included"}
             </p>
           </div>
