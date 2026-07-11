@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
@@ -77,7 +78,7 @@ export default function DiningDetailPage() {
 
   if (error) {
     return (
-      <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_rgba(28,35,46,0.98),_rgba(5,6,8,1))] px-6 py-24 text-white">
+      <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_rgba(28,35,46,0.98),_rgba(5,6,8,1))] px-6 pb-24 pt-32 text-white sm:pt-36">
         <div className="mx-auto max-w-3xl rounded-[2rem] border border-rose-400/20 bg-rose-400/10 p-8 text-center">
           <p className="text-sm uppercase tracking-[0.35em] text-rose-200/80">
             Dining detail
@@ -97,7 +98,7 @@ export default function DiningDetailPage() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_rgba(28,35,46,0.98),_rgba(5,6,8,1))] px-6 py-24 text-white">
+      <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_rgba(28,35,46,0.98),_rgba(5,6,8,1))] px-6 pb-24 pt-32 text-white sm:pt-36">
         <div className="mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/5 shadow-[0_28px_90px_rgba(0,0,0,0.38)] backdrop-blur-md">
           <div className="grid min-h-[70vh] gap-0 lg:grid-cols-2">
             <div className="animate-pulse bg-white/8" />
@@ -114,7 +115,7 @@ export default function DiningDetailPage() {
 
   if (!venue) {
     return (
-      <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_rgba(28,35,46,0.98),_rgba(5,6,8,1))] px-6 py-24 text-white">
+      <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_rgba(28,35,46,0.98),_rgba(5,6,8,1))] px-6 pb-24 pt-32 text-white sm:pt-36">
         <div className="mx-auto max-w-3xl rounded-[2rem] border border-white/10 bg-white/5 p-8 text-center shadow-[0_24px_80px_rgba(0,0,0,0.32)] backdrop-blur-md">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-amber-400/20 bg-amber-400/10 text-amber-200">
             <Sparkles size={24} />
@@ -138,7 +139,7 @@ export default function DiningDetailPage() {
 
   return (
     <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_rgba(28,35,46,0.98),_rgba(5,6,8,1))] text-white">
-      <section className="px-6 py-10">
+      <section className="px-6 pb-10 pt-32 sm:pt-36">
         <Link
           href="/dining"
           className="inline-flex items-center gap-2 text-sm text-white/65 transition hover:text-amber-300"
@@ -156,10 +157,13 @@ export default function DiningDetailPage() {
           className="overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/5 shadow-[0_28px_90px_rgba(0,0,0,0.38)] backdrop-blur-md"
         >
           <div className="relative min-h-[72vh] overflow-hidden">
-            <img
+            <Image
               src={primaryImage}
               alt={venue.name}
-              className="absolute inset-0 h-full w-full object-cover"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
             />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,6,8,0.32),rgba(4,6,8,0.84))]" />
 

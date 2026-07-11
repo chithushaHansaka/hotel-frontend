@@ -94,6 +94,13 @@ const mapApiRoom = (room, availability = {}) => ({
     (availability.availableRooms ?? 1) > 0,
 });
 
+const getLocalToday = () => {
+  const today = new Date();
+  const offset = today.getTimezoneOffset();
+  const localDate = new Date(today.getTime() - offset * 60 * 1000);
+  return localDate.toISOString().split("T")[0];
+};
+
 export default function Step1Selection() {
   const searchParamsFromUrl = useSearchParams();
   const searchParams = useBookingStore((state) => state.searchParams);
@@ -121,11 +128,7 @@ export default function Step1Selection() {
   const hasAppliedUrlRoom = useRef(false);
 
   const totalSelectedRooms = getTotalSelectedRooms();
-  const today = new Date().toISOString().split("T")[0];
-  const checkoutMinDate =
-    searchParams.checkIn && searchParams.checkIn > today
-      ? searchParams.checkIn
-      : today;
+  const minDate = getLocalToday();
 
   useEffect(() => {
     let isMounted = true;
@@ -404,7 +407,7 @@ export default function Step1Selection() {
         </div>
 
         <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-5 shadow-[0_28px_90px_rgba(0,0,0,0.35)] backdrop-blur-md sm:p-8">
-          <div className="grid gap-4 lg:grid-cols-[1fr_1fr_auto]">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-[1fr_1fr_auto]">
             <label className="block">
               <span className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-white/55">
                 <CalendarDays size={14} className="text-amber-300" />
@@ -413,7 +416,7 @@ export default function Step1Selection() {
               <input
                 type="date"
                 value={searchParams.checkIn}
-                min={today}
+                min={minDate}
                 onChange={(event) =>
                   updateSearchParams({ checkIn: event.target.value })
                 }
@@ -429,7 +432,7 @@ export default function Step1Selection() {
               <input
                 type="date"
                 value={searchParams.checkOut}
-                min={checkoutMinDate}
+                min={minDate}
                 onChange={(event) =>
                   updateSearchParams({ checkOut: event.target.value })
                 }
@@ -437,7 +440,7 @@ export default function Step1Selection() {
               />
             </label>
 
-            <div className="relative">
+            <div className="relative md:col-span-2 xl:col-span-1">
               <span className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-white/55">
                 <Users size={14} className="text-amber-300" />
                 Guests

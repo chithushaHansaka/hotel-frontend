@@ -99,11 +99,6 @@ export default function OffersPage() {
 
   const sectionLabel =
     activeTab === "Packages" ? "Premium packages" : "Exclusive offers";
-  const sectionDescription =
-    activeTab === "Packages"
-      ? "Curated experiences designed for celebrations, wellness, romance, and private enterprise."
-      : "Limited-time privileges crafted for elevated stays, dining, and long-haul luxury.";
-
   const openOfferBooking = (item) => {
     setSelectedItem(item.title);
     setIsBookingOpen(true);
@@ -298,25 +293,6 @@ export default function OffersPage() {
             </motion.div>
           </AnimatePresence>
         )}
-
-        <div className="mt-12 rounded-[2rem] border border-white/10 bg-white/5 px-6 py-5 text-sm text-white/75 shadow-[0_18px_60px_rgba(0,0,0,0.3)] backdrop-blur-md sm:px-8">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-3">
-              <ChevronRight className="text-amber-300" size={18} />
-              <span>{sectionDescription}</span>
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                setSelectedItem(sectionLabel);
-                setIsBookingOpen(true);
-              }}
-              className="lux-action inline-flex items-center gap-2 rounded-full bg-amber-500 px-4 py-2 font-medium text-black"
-            >
-              Request Inquiry <ArrowRight size={16} />
-            </button>
-          </div>
-        </div>
 
         <BookingModal
           isOpen={isBookingOpen}

@@ -73,7 +73,7 @@ export default function BookPage() {
         </div>
       </section>
 
-      <section className="container mx-auto px-6 py-12 sm:py-16">
+      <section className="container mx-auto px-6 pb-12 pt-28 sm:pb-16 sm:pt-32">
         <div className="mx-auto mb-12 max-w-4xl">
           <div className="relative rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 shadow-[0_24px_70px_rgba(0,0,0,0.35)] backdrop-blur-md sm:p-8">
             <div className="absolute left-8 right-8 top-1/2 hidden h-px -translate-y-1/2 bg-white/10 sm:block" />

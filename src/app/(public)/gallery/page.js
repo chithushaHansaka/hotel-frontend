@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Camera, Filter, Sparkles, X } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
 const API_URL =
@@ -144,7 +145,7 @@ export default function GalleryPage() {
           </div>
         ) : filteredItems.length > 0 ? (
           <div className="mt-14 columns-1 gap-5 sm:columns-2 xl:columns-3">
-            {filteredItems.map((item) => (
+            {filteredItems.map((item, index) => (
               <motion.article
                 key={item._id}
                 layout
@@ -158,11 +159,14 @@ export default function GalleryPage() {
                   onClick={() => setSelectedImage(item)}
                   className="relative block w-full text-left"
                 >
-                  <div className="relative overflow-hidden">
-                    <img
+                  <div className="relative h-80 min-h-[250px] w-full overflow-hidden sm:h-96 lg:h-[28rem]">
+                    <Image
                       src={item?.image || FALLBACK_IMAGE}
                       alt={item?.title || "Gallery image"}
-                      className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                      priority={index < 6}
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/18 to-transparent" />
 
@@ -230,11 +234,16 @@ export default function GalleryPage() {
               >
                 <X size={18} />
               </button>
-              <img
-                src={selectedImage?.image || FALLBACK_IMAGE}
-                alt={selectedImage?.title || "Gallery image"}
-                className="max-h-[90vh] w-full object-contain"
-              />
+              <div className="relative h-[80vh] max-h-[90vh] w-full">
+                <Image
+                  fill
+                  priority
+                  src={selectedImage?.image || FALLBACK_IMAGE}
+                  alt={selectedImage?.title || "Gallery image"}
+                  sizes="100vw"
+                  className="object-contain"
+                />
+              </div>
             </motion.div>
           </motion.div>
         ) : null}

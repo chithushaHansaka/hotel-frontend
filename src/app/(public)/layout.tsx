@@ -8,7 +8,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
     <>
       <Header />
 
-      <div className="relative w-full flex-1 pb-24">{children}</div>
+      <div className="relative w-full flex-1">{children}</div>
 
       <Footer />
 

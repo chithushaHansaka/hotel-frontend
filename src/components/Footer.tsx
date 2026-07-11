@@ -91,7 +91,7 @@ export default function Footer() {
 
   return (
     <footer className="relative border-t border-white/10 bg-gradient-to-b from-zinc-950 to-black text-white">
-      <div className="mx-auto max-w-7xl px-6 pt-24 pb-8">
+      <div className="mx-auto max-w-7xl px-6 pt-12 pb-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="text-sm font-semibold tracking-[0.45em] text-amber-300">

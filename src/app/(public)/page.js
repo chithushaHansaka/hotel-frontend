@@ -416,9 +416,9 @@ export default function Page() {
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1920&q=100')] bg-cover bg-center bg-scroll md:bg-fixed" />
         <div className="absolute inset-0 bg-black/50" />
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0.01, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1, margin: "0px 0px 100px 0px" }}
+          viewport={{ once: true, amount: "some", margin: "100px 0px 0px 0px" }}
           style={{ willChange: "transform, opacity" }}
           transition={{ duration: 1.1, ease: "easeOut" }}
           className="relative z-10 mx-auto max-w-4xl px-4 md:px-8 lg:px-16 text-center transform-gpu"
