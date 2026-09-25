@@ -51,7 +51,7 @@ export default function RoomDetailPage() {
 
     const loadRooms = async () => {
       try {
-        const response = await fetch(API_URL);
+        const response = await fetch(API_URL, { cache: "no-store" });
         const payload = await response.json().catch(() => null);
 
         if (!response.ok) {

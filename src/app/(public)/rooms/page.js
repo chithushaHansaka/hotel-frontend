@@ -38,7 +38,7 @@ export default function RoomsPage() {
 
     const loadRooms = async () => {
       try {
-        const response = await fetch(API_URL);
+        const response = await fetch(API_URL, { cache: "no-store" });
         const payload = await response.json().catch(() => null);
 
         if (!response.ok) {
@@ -137,6 +137,9 @@ export default function RoomsPage() {
               const maxGuests = room.maxGuests ?? 2;
               const viewLabel = room.view || "Refined views";
               const inventory = room.inventory ?? room.availableRooms ?? 0;
+              const amenities = Array.isArray(room.amenities)
+                ? room.amenities
+                : [];
 
               return (
                 <motion.article
@@ -231,6 +234,24 @@ export default function RoomsPage() {
                         </div>
                       </div>
                     </div>
+
+                    {amenities.length > 0 ? (
+                      <div className="mt-6">
+                        <div className="text-xs uppercase tracking-[0.25em] text-white/45">
+                          Amenities
+                        </div>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {amenities.map((amenity) => (
+                            <span
+                              key={amenity}
+                              className="rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-xs text-white/75"
+                            >
+                              {amenity}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
 
                     <div className="mt-8 flex items-center gap-3 text-sm text-white/70">
                       <Eye size={16} className="text-amber-300" />

@@ -35,6 +35,7 @@ const PLACEHOLDER_ROOMS = [
     size: "68 m²",
     bed: "King",
     image: FALLBACK_IMAGE,
+    maxGuests: 2,
     availableRooms: 3,
     isAvailable: true,
   },
@@ -48,6 +49,7 @@ const PLACEHOLDER_ROOMS = [
     bed: "Emperor King",
     image:
       "https://images.unsplash.com/photo-1611892440504-42a784e15d58?q=80&w=1600&auto=format&fit=crop",
+    maxGuests: 4,
     availableRooms: 2,
     isAvailable: true,
   },
@@ -61,6 +63,7 @@ const PLACEHOLDER_ROOMS = [
     bed: "King + Daybed",
     image:
       "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1600&auto=format&fit=crop",
+    maxGuests: 3,
     availableRooms: 4,
     isAvailable: true,
   },
@@ -83,6 +86,7 @@ const mapApiRoom = (room, availability = {}) => ({
   price: room.price,
   size: room.size || "Luxury suite",
   bed: room.bed || "Signature bed",
+  maxGuests: room.maxGuests,
   image: room.images?.[0] || room.image || FALLBACK_IMAGE,
   availableRooms:
     availability.availableRooms ??
@@ -135,7 +139,7 @@ export default function Step1Selection() {
 
     const loadRooms = async () => {
       try {
-        const response = await fetch(ROOMS_API_URL);
+        const response = await fetch(ROOMS_API_URL, { cache: "no-store" });
         const payload = await response.json().catch(() => null);
 
         if (!response.ok || !isMounted) {
@@ -610,6 +614,10 @@ export default function Step1Selection() {
                         <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/25 px-3 py-1.5">
                           <Bed size={12} className="text-amber-300" />
                           {room.bed}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/25 px-3 py-1.5">
+                          <Users size={12} className="text-amber-300" />
+                          Up to {room.maxGuests} Guests
                         </span>
                       </div>
 
