@@ -12,6 +12,7 @@ import {
   Eye,
   LayoutGrid,
   MapPinned,
+  Users,
   Wifi,
 } from "lucide-react";
 
@@ -146,6 +147,7 @@ export default function RoomDetailPage() {
   const stats = [
     { icon: Bed, label: "Bed", value: room.bed || "Signature bedding" },
     { icon: LayoutGrid, label: "Size", value: room.size || "Luxury suite" },
+    { icon: Users, label: "Capacity", value: `Up to ${room.maxGuests ?? 2} Guests` },
     { icon: MapPinned, label: "View", value: room.view || "Refined outlook" },
     { icon: Wifi, label: "Connectivity", value: "Free Wi-Fi" },
   ];

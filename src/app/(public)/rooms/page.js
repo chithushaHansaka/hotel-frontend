@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Bed, Eye, Maximize, Map, Star } from "lucide-react";
+import { Bed, Eye, Maximize, Map, Users } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -134,6 +134,7 @@ export default function RoomsPage() {
               const roomSlug = slugify(room.name);
               const sizeLabel = room.size || "Luxury suite";
               const bedLabel = room.bed || "Signature bed";
+              const maxGuests = room.maxGuests ?? 2;
               const viewLabel = room.view || "Refined views";
               const inventory = room.inventory ?? room.availableRooms ?? 0;
 
@@ -200,6 +201,19 @@ export default function RoomsPage() {
                           </div>
                           <div className="mt-1 text-sm text-white/80">
                             {bedLabel}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/20 p-4">
+                        <div className="mt-0.5 text-amber-300">
+                          <Users size={18} />
+                        </div>
+                        <div>
+                          <div className="text-xs uppercase tracking-[0.25em] text-white/45">
+                            Capacity
+                          </div>
+                          <div className="mt-1 text-sm text-white/80">
+                            Up to {maxGuests} Guests
                           </div>
                         </div>
                       </div>

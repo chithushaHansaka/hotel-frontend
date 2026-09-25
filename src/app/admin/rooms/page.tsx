@@ -13,6 +13,7 @@ type Room = {
   price: number;
   size?: string;
   bed?: string;
+  maxGuests?: number;
   view?: string;
   images?: string[];
   amenities?: string[];
@@ -26,6 +27,7 @@ type RoomFormState = {
   price: string;
   size: string;
   bed: string;
+  maxGuests: string;
   view: string;
   amenities: string;
   totalRooms: string;
@@ -37,6 +39,7 @@ const emptyForm: RoomFormState = {
   price: "",
   size: "",
   bed: "",
+  maxGuests: "2",
   view: "",
   amenities: "",
   totalRooms: "1",
@@ -111,6 +114,7 @@ export default function AdminRoomsPage() {
       price: room.price?.toString() || "",
       size: room.size || "",
       bed: room.bed || "",
+      maxGuests: room.maxGuests?.toString() || "2",
       view: room.view || "",
       amenities: toCommaSeparatedString(room.amenities),
       totalRooms: room.totalRooms?.toString() || "1",
@@ -146,6 +150,7 @@ export default function AdminRoomsPage() {
       payload.append("price", form.price);
       payload.append("size", form.size);
       payload.append("bed", form.bed);
+      payload.append("maxGuests", form.maxGuests);
       payload.append("view", form.view);
       payload.append("amenities", form.amenities);
       payload.append("totalRooms", form.totalRooms);
@@ -373,6 +378,10 @@ export default function AdminRoomsPage() {
                             {room.bed || "N/A"}
                           </div>
                           <div>
+                            <span className="text-white/45">Capacity:</span>{" "}
+                            Up to {room.maxGuests ?? 2} Guests
+                          </div>
+                          <div>
                             <span className="text-white/45">View:</span>{" "}
                             {room.view || "N/A"}
                           </div>
@@ -585,6 +594,27 @@ export default function AdminRoomsPage() {
                     }
                     className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none placeholder:text-white/30 focus:border-amber-300/45 focus:bg-black/50"
                     placeholder="King Bed"
+                  />
+                </label>
+
+                <label className="block">
+                  <span className="mb-2 block text-xs uppercase tracking-[0.28em] text-white/55">
+                    Max Guests / Capacity
+                  </span>
+                  <input
+                    type="number"
+                    min="1"
+                    step="1"
+                    value={form.maxGuests}
+                    onChange={(event) =>
+                      setForm((current) => ({
+                        ...current,
+                        maxGuests: event.target.value,
+                      }))
+                    }
+                    className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3.5 text-sm text-white outline-none placeholder:text-white/30 focus:border-amber-300/45 focus:bg-black/50"
+                    placeholder="2"
+                    required
                   />
                 </label>
 
