@@ -17,6 +17,7 @@ import {
   Users,
 } from "lucide-react";
 import { useBookingStore } from "@/store/bookingStore";
+import { getLocalToday } from "@/lib/date";
 
 const ROOMS_API_URL =
   "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/rooms";
@@ -98,13 +99,6 @@ const mapApiRoom = (room, availability = {}) => ({
     (availability.availableRooms ?? 1) > 0,
 });
 
-const getLocalToday = () => {
-  const today = new Date();
-  const offset = today.getTimezoneOffset();
-  const localDate = new Date(today.getTime() - offset * 60 * 1000);
-  return localDate.toISOString().split("T")[0];
-};
-
 export default function Step1Selection() {
   const searchParamsFromUrl = useSearchParams();
   const searchParams = useBookingStore((state) => state.searchParams);
@@ -132,8 +126,6 @@ export default function Step1Selection() {
   const hasAppliedUrlRoom = useRef(false);
 
   const totalSelectedRooms = getTotalSelectedRooms();
-  const minDate = getLocalToday();
-
   useEffect(() => {
     let isMounted = true;
 
@@ -351,6 +343,8 @@ export default function Step1Selection() {
     return (
       !Number.isNaN(checkInDate.getTime()) &&
       !Number.isNaN(checkOutDate.getTime()) &&
+      searchParams.checkIn >= getLocalToday() &&
+      searchParams.checkOut >= getLocalToday() &&
       checkOutDate > checkInDate
     );
   }, [searchParams.checkIn, searchParams.checkOut]);
@@ -388,6 +382,14 @@ export default function Step1Selection() {
     setStep(2);
   };
 
+  const handleDateChange = (field, value) => {
+    if (value && value < getLocalToday()) {
+      return;
+    }
+
+    updateSearchParams({ [field]: value });
+  };
+
   return (
     <>
       <motion.div
@@ -420,9 +422,9 @@ export default function Step1Selection() {
               <input
                 type="date"
                 value={searchParams.checkIn}
-                min={minDate}
+                min={getLocalToday()}
                 onChange={(event) =>
-                  updateSearchParams({ checkIn: event.target.value })
+                  handleDateChange("checkIn", event.target.value)
                 }
                 className={inputClass}
               />
@@ -436,9 +438,9 @@ export default function Step1Selection() {
               <input
                 type="date"
                 value={searchParams.checkOut}
-                min={minDate}
+                min={getLocalToday()}
                 onChange={(event) =>
-                  updateSearchParams({ checkOut: event.target.value })
+                  handleDateChange("checkOut", event.target.value)
                 }
                 className={inputClass}
               />

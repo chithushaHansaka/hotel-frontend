@@ -17,6 +17,7 @@ import {
   User,
 } from "lucide-react";
 import { useBookingStore } from "@/store/bookingStore";
+import { getLocalToday } from "@/lib/date";
 
 const API_URL =
   "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/bookings";
@@ -206,6 +207,15 @@ export default function Step3Checkout() {
 
     if (!searchParams.checkIn || !searchParams.checkOut) {
       setError("Please select valid check-in and check-out dates.");
+      return;
+    }
+
+    if (
+      searchParams.checkIn < getLocalToday() ||
+      searchParams.checkOut < getLocalToday() ||
+      searchParams.checkOut <= searchParams.checkIn
+    ) {
+      setError("Check-in and check-out dates must be today or later.");
       return;
     }
 

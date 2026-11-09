@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, CalendarDays, CheckCircle2, Eye, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { getLocalToday } from "@/lib/date";
 
 const API_URL =
   "https://thelux-backend-api-fhejbugpe6a4heae.centralindia-01.azurewebsites.net/api/inquiries";
@@ -92,8 +93,21 @@ export default function BookingModal({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsSubmitting(true);
     setError("");
+
+    if (
+      type === "room" &&
+      (fields.date < getLocalToday() ||
+        fields.time < getLocalToday() ||
+        fields.time <= fields.date)
+    ) {
+      setError(
+        "Check-in and check-out dates must be today or later, with check-out after check-in.",
+      );
+      return;
+    }
+
+    setIsSubmitting(true);
 
     const subjectMap = {
       room: "Room Reservation",
@@ -313,6 +327,7 @@ export default function BookingModal({
                       <input
                         type="date"
                         value={fields.date}
+                        min={getLocalToday()}
                         onChange={handleChange("date")}
                         className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm text-white outline-none [color-scheme:dark] focus:border-amber-400 sm:px-5 sm:py-3.5"
                       />
@@ -368,6 +383,7 @@ export default function BookingModal({
                             <input
                               type="date"
                               value={fields.date}
+                              min={getLocalToday()}
                               onChange={handleChange("date")}
                               className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm text-white outline-none [color-scheme:dark] focus:border-amber-400 sm:px-5 sm:py-3.5"
                             />
@@ -379,6 +395,7 @@ export default function BookingModal({
                             <input
                               type="date"
                               value={fields.time}
+                              min={getLocalToday()}
                               onChange={handleChange("time")}
                               className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm text-white outline-none [color-scheme:dark] focus:border-amber-400 sm:px-5 sm:py-3.5"
                             />
@@ -393,6 +410,7 @@ export default function BookingModal({
                             <input
                               type="date"
                               value={fields.date}
+                              min={getLocalToday()}
                               onChange={handleChange("date")}
                               className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm text-white outline-none [color-scheme:dark] focus:border-amber-400 sm:px-5 sm:py-3.5"
                             />
